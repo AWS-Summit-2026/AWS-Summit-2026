@@ -35,8 +35,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 .fact-icon{font-size:24px;margin-bottom:8px}.fact-title{font-size:13px;font-weight:700;margin-bottom:4px}.fact-desc{font-size:11px;color:var(--text2);line-height:1.7}
 .section-title{font-size:22px;font-weight:900;text-align:center;margin-bottom:24px}.section-title .hl{color:var(--orange)}
 .challenges{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 auto 28px;padding:0 4px}
-
-/* ===== 체험존 카드 AWS 오렌지 강조 ===== */
 .chal{background:linear-gradient(135deg,rgba(255,153,0,.1),rgba(255,107,0,.04));border:2px solid rgba(255,153,0,.35);border-radius:14px;padding:24px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;min-height:180px;animation:pulseGlow 3s ease-in-out infinite}
 .chal::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,153,0,.08),transparent 70%);pointer-events:none}
 .chal::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#ff9900,#ffcc00,#ff6b00);transform:scaleX(1);border-radius:14px 14px 0 0}
@@ -48,7 +46,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 .chal-tags{display:flex;gap:5px;flex-wrap:wrap}
 .tag{padding:3px 9px;background:rgba(255,153,0,.12);border:1px solid rgba(255,153,0,.3);border-radius:8px;font-size:9px;font-weight:700;color:#ff9900}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 8px rgba(255,153,0,.1)}50%{box-shadow:0 0 22px rgba(255,153,0,.25),0 0 44px rgba(255,153,0,.08)}}
-
 .landing-footer{text-align:center;padding:16px;font-size:11px;color:var(--text2)}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--text1);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97);opacity:.9}
@@ -134,9 +131,28 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 .pr-role-icon{font-size:18px;flex-shrink:0}.pr-role-title{font-size:11px;font-weight:700;margin-bottom:2px}.pr-role-desc{font-size:10px;color:var(--text2);line-height:1.5}
 .pr-note{font-size:12px;color:var(--text2);line-height:1.8;font-style:italic;border-left:3px solid var(--orange);padding-left:12px;margin-bottom:20px}
 .pr-bars{margin-bottom:20px}
-.pr-bar-item{margin-bottom:8px}.pr-bar-label{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:3px}
+.pr-bar-item{margin-bottom:4px;cursor:pointer;padding:6px 8px;border-radius:8px;transition:all .2s;border:2px solid transparent}
+.pr-bar-item:hover{background:rgba(255,255,255,.03)}
+.pr-bar-item.active{border-color:var(--orange);background:rgba(255,153,0,.05)}
+.pr-bar-label{display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:3px}
 .pr-bar-track{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}.pr-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
 .pr-bar-fill.best{background:linear-gradient(90deg,var(--purple),var(--accent))}
+.pr-bar-tap-hint{font-size:9px;color:var(--text2);text-align:right;margin-top:2px}
+.pr-bar-expand{max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease;opacity:0}
+.pr-bar-expand.open{max-height:600px;opacity:1;margin-top:8px}
+.pr-bar-expand-inner{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;animation:fadeUp .3s ease}
+.pr-bar-expand-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pr-bar-expand-icon{font-size:32px}
+.pr-bar-expand-name{font-size:16px;font-weight:900}
+.pr-bar-expand-full{font-size:11px;color:var(--text2)}
+.pr-bar-expand-catch{font-size:12px;color:var(--orange);font-weight:700;font-style:italic;margin-bottom:10px}
+.pr-bar-expand-desc{font-size:11px;color:var(--text2);line-height:1.8;margin-bottom:12px}
+.pr-bar-expand-roles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pr-bar-expand-role{background:var(--bg1);border-radius:6px;padding:8px;display:flex;gap:6px;align-items:flex-start}
+.pr-bar-expand-role-icon{font-size:14px;flex-shrink:0}
+.pr-bar-expand-role-title{font-size:10px;font-weight:700;margin-bottom:1px}
+.pr-bar-expand-role-desc{font-size:9px;color:var(--text2);line-height:1.4}
+.pr-bar-my-tag{display:inline-block;padding:2px 8px;background:rgba(255,153,0,.15);border:1px solid rgba(255,153,0,.3);border-radius:4px;font-size:9px;font-weight:700;color:var(--orange);margin-left:8px}
 .pr-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:16px 24px;border-top:1px solid var(--border)}
 .fb-overlay{display:none;position:fixed;inset:0;z-index:1100;align-items:center;justify-content:center;padding:16px}
 .fb-overlay.on{display:flex;animation:fadeUp .3s ease}
@@ -224,10 +240,33 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 @keyframes fadeOut{to{opacity:0;transform:translateY(10px)}}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-@media(max-width:480px){.two-col{grid-template-columns:1fr}.pr-roles{grid-template-columns:1fr}.hero-h{font-size:26px}.challenges{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.stats-bar{gap:12px}.stat-num{font-size:20px}.result-grid{grid-template-columns:repeat(3,1fr)}}
+/* ===== INTRO OVERLAY ===== */
+#introOverlay{position:fixed;inset:0;z-index:99999;background:var(--bg0);display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .8s ease,visibility .8s ease}
+#introOverlay.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-logo{width:60px;height:60px;background:linear-gradient(135deg,#ff9900,#ff6b00);border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:20px;margin-bottom:24px;animation:introPulse 1.5s ease-in-out infinite}
+@keyframes introPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,153,0,.4)}50%{transform:scale(1.05);box-shadow:0 0 30px 10px rgba(255,153,0,.2)}}
+.intro-typing{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--text1);min-height:28px;text-align:center}
+.intro-cursor{display:inline-block;width:2px;height:20px;background:var(--orange);margin-left:2px;animation:cursorBlink .6s infinite}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+.intro-sub{font-size:12px;color:var(--text2);margin-top:12px;opacity:0;transition:opacity .5s ease}
+.intro-sub.show{opacity:1}
+.intro-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.intro-particle{position:absolute;width:3px;height:3px;background:var(--orange);border-radius:50%;opacity:.3;animation:particleFloat linear infinite}
+@keyframes particleFloat{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.3}90%{opacity:.3}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+@media(max-width:480px){.two-col{grid-template-columns:1fr}.pr-roles{grid-template-columns:1fr}.hero-h{font-size:26px}.challenges{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.stats-bar{gap:12px}.stat-num{font-size:20px}.result-grid{grid-template-columns:repeat(3,1fr)}.pr-bar-expand-roles{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
+<!-- ===== INTRO OVERLAY ===== -->
+<div id="introOverlay">
+<div class="intro-particles" id="introParticles"></div>
+<div class="intro-logo">DC</div>
+<div class="intro-typing"><span id="introText"></span><span class="intro-cursor"></span></div>
+<div class="intro-sub" id="introSub">Experience the Infrastructure Behind the Cloud</div>
+</div>
+
 <div class="app">
 <div class="hdr">
 <div class="hdr-left"><div class="hdr-logo">DC</div><div><div class="hdr-title">AWS Data Center Challenge</div><div class="hdr-sub">Experience the Infrastructure Behind the Cloud</div></div></div>
@@ -317,6 +356,31 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 </div>
 
 <script>
+/* ===== INTRO ===== */
+(function(){
+var overlay=document.getElementById('introOverlay');
+var textEl=document.getElementById('introText');
+var subEl=document.getElementById('introSub');
+var particlesEl=document.getElementById('introParticles');
+var msg='AWS Data Center Challenge';
+var idx=0;
+// particles
+for(var p=0;p<20;p++){
+var dot=document.createElement('div');
+dot.className='intro-particle';
+dot.style.left=Math.random()*100+'%';
+dot.style.animationDuration=(Math.random()*4+3)+'s';
+dot.style.animationDelay=(Math.random()*3)+'s';
+dot.style.width=dot.style.height=(Math.random()*3+2)+'px';
+particlesEl.appendChild(dot);
+}
+function typeChar(){
+if(idx<msg.length){textEl.textContent+=msg.charAt(idx);idx++;setTimeout(typeChar,60)}
+else{setTimeout(function(){subEl.classList.add('show')},300);setTimeout(function(){overlay.classList.add('hide')},2800)}
+}
+setTimeout(typeChar,400);
+})();
+
 var EXPLORE=[
 {id:'E1',sev:'p1',title:'고장난 디스크 처리',location:'ICN-01 Hall A',rack:'A-12-07',story:'당신은 서버 점검 중 HDD 4번에서 FAULT 경고를 발견했습니다. 이 서버는 고객 데이터를 저장하는 스토리지 서버입니다.',knowledge:{title:'💡 고객 데이터 보호',desc:'AWS에서는 고객 데이터 보호가 최우선입니다. 고장난 디스크에도 고객 데이터가 남아있을 수 있으므로, 수리/재사용은 절대 허용되지 않습니다.'},hint:'고장난 디스크에도 <strong>고객 데이터</strong>가 남아있을 수 있습니다.',leds:[{label:'HDD 4',status:'red',val:'FAULT'},{label:'RAID',status:'amber',val:'DEGRADED'},{label:'Other HDDs',status:'green',val:'OK'}],context:{'Disk Status':{val:'HDD4 FAULT',cls:'bad'},'Data Class':{val:'Customer Data',cls:'bad'},'Spare Disk':{val:'Available',cls:''}},options:[{title:'수리 후 다른 서버에 재사용',time:'-',desc:'비용 절감을 위해 디스크를 수리하여 재사용합니다.',pros:['비용 절감'],cons:['고객 데이터 유출 위험','보안 규정 위반'],score:10,best:false,explain:'❌ 절대 안 됩니다! 고장난 디스크에도 고객 데이터가 남아있을 수 있습니다.'},{title:'고객 데이터 보호를 위해 즉시 파기 처리',time:'규정 절차',desc:'고장난 디스크를 즉시 보안 절차에 따라 파기합니다.',pros:['고객 데이터 완전 보호','보안 규정 준수'],cons:[],score:100,best:true,explain:'✅ AWS에서는 고장난 디스크를 절대 수리/재사용하지 않습니다.'},{title:'창고에 보관했다가 나중에 일괄 처리',time:'-',desc:'모아두었다가 한꺼번에 처리합니다.',pros:['효율적 처리'],cons:['보관 중 분실/유출 위험'],score:30,best:false,explain:'⚠️ 고객 데이터가 담긴 디스크를 보관하는 것 자체가 리스크입니다.'}]},
 {id:'E2',sev:'p2',title:'서버 폐기(Decommission) 절차',location:'ICN-01 Hall A',rack:'A-20-15',story:'수명이 다한 서버를 폐기해야 합니다. 고객 데이터가 저장된 HDD 2개와 SSD 1개가 장착되어 있고, 네트워크는 이미 분리된 상태입니다.',knowledge:{title:'💡 서버 폐기와 데이터 보안',desc:'고객 데이터가 담긴 디스크는 소프트웨어로 완전 삭제한 후 물리적으로 파쇄합니다.'},hint:'단순 포맷은 데이터를 실제로 지우지 않습니다. <strong>소프트웨어 삭제 + 물리 파쇄</strong>의 이중 절차와 <strong>문서화</strong>가 필수입니다.',leds:[{label:'Power',status:'green',val:'ON'},{label:'HDD 0-1',status:'green',val:'2TB'},{label:'SSD 0',status:'green',val:'480GB'},{label:'Network',status:'off',val:'DISCONNECTED'}],context:{'Data Class':{val:'Customer Data',cls:'bad'},'Documentation':{val:'Required',cls:''}},options:[{title:'포맷 후 중고로 판매',time:'10분',desc:'디스크를 포맷하고 서버를 중고로 판매합니다.',pros:['비용 회수'],cons:['데이터 복구 가능','심각한 보안 위반'],score:10,best:false,explain:'❌ 포맷은 데이터를 실제로 삭제하지 않습니다.'},{title:'데이터 완전 삭제 → 물리 파쇄 → 전 과정 문서화',time:'4시간',desc:'인증된 방식으로 삭제 후 물리 파쇄하고 모든 과정을 기록합니다.',pros:['보안 규정 완전 준수','감사 대응 가능'],cons:['시간 소요'],score:100,best:true,explain:'✅ 소프트웨어 삭제 → 물리 파쇄 → 문서화의 이중 절차가 표준입니다.'},{title:'디스크만 파쇄, 문서화 생략',time:'30분',desc:'디스크는 파쇄하지만 소프트웨어 삭제와 문서화를 생략합니다.',pros:['빠른 처리'],cons:['삭제 로그 없음','감사 시 미준수'],score:50,best:false,explain:'⚠️ 물리 파쇄만으로도 복구 불가능하지만, 감사 시 문서화를 요구합니다.'}]},
@@ -372,6 +436,8 @@ function saveBadgeData(d){localStorage.setItem('dc_badges_v2',JSON.stringify(d))
 
 var state={score:0,resolved:0,totalTime:0,correct:0,total:0,queue:[],currentIdx:0,selectedOpt:null,ticketStartTime:0,answers:[]};
 var pState={queue:[],currentIdx:0,answers:[],scores:{DCO:0,DCEO:0,SEC:0,GND:0,LOG:0,PRJ:0}};
+var expandedBarKey=null;
+var myJobKey=null;
 
 function showScreen(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
 
@@ -482,12 +548,34 @@ window.scrollTo(0,0);
 }
 
 function showPResult(){
-var scores=pState.scores,maxKey='DCO',maxVal=0;var keys=Object.keys(scores);for(var i=0;i<keys.length;i++){if(scores[keys[i]]>maxVal){maxVal=scores[keys[i]];maxKey=keys[i]}}
-var total=0;for(var i=0;i<keys.length;i++)total+=scores[keys[i]];if(total===0)total=1;var job=JOB_DATA[maxKey];
-var barsHtml='';var sorted=keys.slice().sort(function(a,b){return scores[b]-scores[a]});
-for(var i=0;i<sorted.length;i++){var k=sorted[i],pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;barsHtml+='<div class="pr-bar-item"><div class="pr-bar-label"><span>'+j.icon+' '+j.name+'</span><span>'+pct+'%'+(isBest?' ★':'')+'</span></div><div class="pr-bar-track"><div class="pr-bar-fill'+(isBest?' best':'')+'" style="width:'+pct+'%;background:'+(isBest?'':j.color)+'"></div></div></div>'}
-var rolesHtml='';for(var r=0;r<job.roles.length;r++){var role=job.roles[r];rolesHtml+='<div class="pr-role"><div class="pr-role-icon">'+role.icon+'</div><div><div class="pr-role-title">'+role.title+'</div><div class="pr-role-desc">'+role.desc+'</div></div></div>'}
-document.getElementById('prArea').innerHTML='<div class="pr-card"><div class="pr-top"><div class="pr-icon">'+job.icon+'</div><div class="pr-type">당신에게 어울리는 InfraOps 직무는...</div><div class="pr-name">'+job.name+' — '+job.full+'</div><div class="pr-catch">"'+job.catch+'"</div></div><div class="pr-body"><div class="pr-note">'+job.sub+'</div><div class="pr-desc">'+job.desc.replace(/\n/g,'<br>')+'</div><div class="pr-roles">'+rolesHtml+'</div><div style="font-size:13px;font-weight:700;margin-bottom:10px">📊 당신의 성향 분석</div><div class="pr-bars">'+barsHtml+'</div></div><div class="pr-actions"><button class="btn btn-primary" id="prCapture">📸 결과 캡처</button><button class="btn btn-primary" id="prRetry">🔄 다시 테스트</button><button class="btn" id="prHome">← 메인으로</button></div></div>';
+var scores=pState.scores,maxKey='DCO',maxVal=0;
+var keys=Object.keys(scores);
+for(var i=0;i<keys.length;i++){if(scores[keys[i]]>maxVal){maxVal=scores[keys[i]];maxKey=keys[i]}}
+var total=0;for(var i=0;i<keys.length;i++)total+=scores[keys[i]];if(total===0)total=1;
+var job=JOB_DATA[maxKey];
+myJobKey=maxKey;
+expandedBarKey=maxKey;
+
+var barsHtml='';
+var sorted=keys.slice().sort(function(a,b){return scores[b]-scores[a]});
+for(var i=0;i<sorted.length;i++){
+var k=sorted[i],pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;
+var isExpanded=k===expandedBarKey;
+barsHtml+='<div class="pr-bar-item'+(isExpanded?' active':'')+'" data-barkey="'+k+'" onclick="toggleBarExpand(\''+k+'\')">';
+barsHtml+='<div class="pr-bar-label"><span>'+j.icon+' '+j.name+(isBest?' <span class="pr-bar-my-tag">⭐ MY</span>':'')+'</span><span>'+pct+'%'+(isBest?' ★':'')+'  ▼</span></div>';
+barsHtml+='<div class="pr-bar-track"><div class="pr-bar-fill'+(isBest?' best':'')+'" style="width:'+pct+'%;background:'+(isBest?'':j.color)+'"></div></div>';
+barsHtml+='<div class="pr-bar-expand'+(isExpanded?' open':'')+'" id="barExpand_'+k+'">'+buildBarExpandContent(k)+'</div>';
+barsHtml+='</div>';
+}
+
+var rolesHtml='';
+for(var r=0;r<job.roles.length;r++){
+var role=job.roles[r];
+rolesHtml+='<div class="pr-role"><div class="pr-role-icon">'+role.icon+'</div><div><div class="pr-role-title">'+role.title+'</div><div class="pr-role-desc">'+role.desc+'</div></div></div>';
+}
+
+document.getElementById('prArea').innerHTML='<div class="pr-card"><div class="pr-top"><div class="pr-icon">'+job.icon+'</div><div class="pr-type">당신에게 어울리는 InfraOps 직무는...</div><div class="pr-name">'+job.name+' — '+job.full+'</div><div class="pr-catch">"'+job.catch+'"</div></div><div class="pr-body"><div class="pr-note">'+job.sub+'</div><div class="pr-desc">'+job.desc.replace(/\n/g,'<br>')+'</div><div class="pr-roles">'+rolesHtml+'</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">📊 당신의 성향 분석</div><div class="pr-bar-tap-hint">👆 각 직무를 눌러 자세히 알아보세요</div><div class="pr-bars">'+barsHtml+'</div></div><div class="pr-actions"><button class="btn btn-primary" id="prCapture">📸 결과 캡처</button><button class="btn btn-primary" id="prRetry">🔄 다시 테스트</button><button class="btn" id="prHome">← 메인으로</button></div></div>';
+
 showScreen('scrPResult');
 setTimeout(function(){document.querySelectorAll('.pr-bar-fill').forEach(function(el){var w=el.style.width;el.style.width='0';setTimeout(function(){el.style.width=w},50)})},100);
 document.getElementById('prCapture').onclick=function(){captureResult(maxKey,sorted,total)};
@@ -495,6 +583,41 @@ document.getElementById('prRetry').onclick=function(){startPersonality()};
 document.getElementById('prHome').onclick=function(){showScreen('scrLanding')};
 tryUnlockInteractive();
 }
+
+function buildBarExpandContent(jobKey){
+var jd=JOB_DATA[jobKey];
+var h='<div class="pr-bar-expand-inner">';
+h+='<div class="pr-bar-expand-top"><div class="pr-bar-expand-icon">'+jd.icon+'</div><div><div class="pr-bar-expand-name">'+jd.name+'</div><div class="pr-bar-expand-full">'+jd.full+'</div></div></div>';
+h+='<div class="pr-bar-expand-catch">"'+jd.catch+'"</div>';
+h+='<div class="pr-bar-expand-desc">'+jd.desc.replace(/\n/g,'<br>')+'</div>';
+h+='<div style="font-size:11px;font-weight:700;margin-bottom:6px">💼 주요 역할</div>';
+h+='<div class="pr-bar-expand-roles">';
+for(var r=0;r<jd.roles.length;r++){
+var role=jd.roles[r];
+h+='<div class="pr-bar-expand-role"><div class="pr-bar-expand-role-icon">'+role.icon+'</div><div><div class="pr-bar-expand-role-title">'+role.title+'</div><div class="pr-bar-expand-role-desc">'+role.desc+'</div></div></div>';
+}
+h+='</div></div>';
+return h;
+}
+
+function toggleBarExpand(key){
+var allItems=document.querySelectorAll('.pr-bar-item');
+var allExpands=document.querySelectorAll('.pr-bar-expand');
+if(expandedBarKey===key){
+expandedBarKey=null;
+allItems.forEach(function(el){el.classList.remove('active')});
+allExpands.forEach(function(el){el.classList.remove('open')});
+return;
+}
+expandedBarKey=key;
+allItems.forEach(function(el){el.classList.toggle('active',el.getAttribute('data-barkey')===key)});
+allExpands.forEach(function(el){el.classList.toggle('open',el.id==='barExpand_'+key)});
+setTimeout(function(){
+var target=document.getElementById('barExpand_'+key);
+if(target)target.scrollIntoView({behavior:'smooth',block:'nearest'});
+},100);
+}
+
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}}
 
 function updateBadgeUI(){
@@ -511,7 +634,7 @@ function renderBadgeScreen(){
 var data=getBadgeData(),count=Object.keys(data.zones).length,offset=327-(count/3)*327;
 var h='<div class="badge-header"><div class="badge-header-icon">🏅</div><div class="badge-header-title">뱃지 컬렉션</div><div class="badge-header-sub">3개 Interact Zone을 체험하고 뱃지를 모으세요!</div></div>';
 h+='<div class="badge-ring-wrap"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="52" fill="none" stroke="#21262d" stroke-width="8"/><circle cx="65" cy="65" r="52" fill="none" stroke="#ff9900" stroke-width="8" stroke-dasharray="327" stroke-dashoffset="'+offset+'" stroke-linecap="round" transform="rotate(-90 65 65)" style="transition:stroke-dashoffset 1s ease"/><text x="65" y="60" text-anchor="middle" font-size="32" font-weight="900" font-family="JetBrains Mono,monospace" fill="#ff9900">'+count+'/3</text><text x="65" y="80" text-anchor="middle" font-size="10" fill="#8b949e">수집 완료</text></svg></div>';
-if(count>=3)h+='<div class="badge-complete-banner show"><div class="badge-complete-icon">🎉</div><div class="badge-complete-title">축하합니다! 올 클리어!</div><div class="badge-complete-desc">3개 Interact Zone을 모두 체험하셨습니다!<br>AWS 부스에서 특별 기념품을 수령하세요! 🎁</div></div>';
+if(count>=3)h+='<div class="badge-complete-banner show"><div class="badge-complete-icon">🎉</div><div class="badge-complete-title">축하합니다! 올 클리어!</div><div class="badge-complete-desc">3개 Interact Zone을 모두 체험하셨습니다!<br>AWS Data Center 부스에서 특별 기념품을 수령하세요! 🎁</div></div>';
 ZONES.forEach(function(z){var done=!!data.zones[z.id],time=done?new Date(data.zones[z.id]).toLocaleString('ko-KR'):'';h+='<div class="badge-zone-card '+(done?'done':'')+'"><div class="badge-zone-card-inner"><div class="badge-zone-card-icon">'+(done?z.badge.icon:z.icon)+'</div><div class="badge-zone-card-info"><div class="badge-zone-card-name">'+z.name+'</div><div class="badge-zone-card-desc">'+(done?z.badge.name+' — '+z.badge.desc:z.subtitle)+'</div>'+(done?'<div class="badge-zone-card-time">✅ '+time+'</div>':'')+'</div><div class="badge-zone-card-check">'+(done?'✅':'⬜')+'</div></div></div>'});
 h+='<div class="code-section"><div class="code-section-title">🔑 Zone 인증번호 입력</div><div class="code-section-desc">Infra 체험 존, CSR 존에서 받은<br>인증번호를 입력하세요</div><div class="code-input-row"><div class="code-boxes" id="codeBoxes"><input type="text" maxlength="1" class="code-box" data-idx="0" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="1" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="2" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="3" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="4" inputmode="text" autocomplete="off"></div></div><div style="margin-top:12px"><button class="btn btn-primary" id="codeSubmitBtn" onclick="submitCode()" disabled>확인</button></div><div class="code-feedback" id="codeFeedback"></div></div>';
 h+='<div style="text-align:center;margin-top:4px"><button class="btn" onclick="showScreen(\'scrLanding\');updateBadgeUI()">← 메인으로</button></div>';
@@ -625,7 +748,7 @@ ctx.fillText(role.desc,col,sy+16);
 sy+=65;
 ctx.fillStyle='#30363d';ctx.fillRect(0,H-50,W,50);
 ctx.fillStyle='#8b949e';ctx.font='600 11px Inter,sans-serif';ctx.textAlign='center';
-ctx.fillText('AWS InfraOPS Team · Summit Seoul 2026',W/2,H-22);
+ctx.fillText('AWS Data Center Team · Summit Seoul 2026',W/2,H-22);
 canvas.toBlob(function(blob){
 var url=URL.createObjectURL(blob);
 var a=document.createElement('a');a.href=url;a.download='my-infraops-result.png';
