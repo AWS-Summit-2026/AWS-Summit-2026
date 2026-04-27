@@ -276,6 +276,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 <div class="intro-scanline"></div>
 <div class="intro-logo">InfraOPS</div>
 <div class="intro-typing"><span id="introText"></span><span class="intro-cursor"></span></div>
+<div class="intro-sub" id="introSub">Experience the Infrastructure Behind the Cloud</div>
 <button class="intro-enter-btn" id="introEnterBtn" onclick="enterApp()">▶ ENTER</button>
 </div>
 
@@ -372,6 +373,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 (function(){
 var overlay=document.getElementById('introOverlay');
 var textEl=document.getElementById('introText');
+var subEl=document.getElementById('introSub');
 var enterBtn=document.getElementById('introEnterBtn');
 var particlesEl=document.getElementById('introParticles');
 var msg='AWS Datacenter Challenge';
@@ -387,8 +389,9 @@ particlesEl.appendChild(dot);
 }
 function typeChar(){
 if(idx<msg.length){textEl.textContent+=msg.charAt(idx);idx++;setTimeout(typeChar,60)}
-else{setTimeout(function(){enterBtn.classList.add('show')},600)}
-}setTimeout(typeChar,400);
+else{setTimeout(function(){subEl.classList.add('show')},400);setTimeout(function(){enterBtn.classList.add('show')},1000)}
+}
+setTimeout(typeChar,400);
 })();
 function enterApp(){document.getElementById('introOverlay').classList.add('hide')}
 
@@ -463,328 +466,42 @@ document.getElementById('fbNextBtn').onclick=function(){closeFeedbackAndNext()};
 updateBadgeUI();
 });
 
-function startGame(){
-var pool=EXPLORE.slice();shuffle(pool);var q=pool.slice(0,7);
-state={score:0,resolved:0,totalTime:0,correct:0,total:q.length,queue:q,currentIdx:0,selectedOpt:null,ticketStartTime:0,answers:new Array(q.length).fill(null)};
-showScreen('scrGame');renderProgress();renderScenario();
-}
-function renderProgress(){
-document.getElementById('progressLabel').textContent='Q'+(state.currentIdx+1)+'/'+state.total;
-var d='';for(var i=0;i<state.total;i++){var c='pdot';if(state.answers[i]!==null)c+=state.answers[i].best?' done':' failed';if(i===state.currentIdx)c+=' current';d+='<div class="'+c+'" data-dot="'+i+'"></div>'}
-document.getElementById('progressDots').innerHTML=d;
-document.querySelectorAll('#progressDots .pdot').forEach(function(el){el.onclick=function(){navigateTo(parseInt(this.getAttribute('data-dot')))}});
-document.getElementById('scoreVal').textContent=state.score;
-}
+function startGame(){var pool=EXPLORE.slice();shuffle(pool);var q=pool.slice(0,7);state={score:0,resolved:0,totalTime:0,correct:0,total:q.length,queue:q,currentIdx:0,selectedOpt:null,ticketStartTime:0,answers:new Array(q.length).fill(null)};showScreen('scrGame');renderProgress();renderScenario()}
+function renderProgress(){document.getElementById('progressLabel').textContent='Q'+(state.currentIdx+1)+'/'+state.total;var d='';for(var i=0;i<state.total;i++){var c='pdot';if(state.answers[i]!==null)c+=state.answers[i].best?' done':' failed';if(i===state.currentIdx)c+=' current';d+='<div class="'+c+'" data-dot="'+i+'"></div>'}document.getElementById('progressDots').innerHTML=d;document.querySelectorAll('#progressDots .pdot').forEach(function(el){el.onclick=function(){navigateTo(parseInt(this.getAttribute('data-dot')))}});document.getElementById('scoreVal').textContent=state.score}
 function navigateTo(idx){if(idx<0||idx>=state.total)return;state.currentIdx=idx;renderProgress();renderScenario()}
-function renderScenario(){
-var t=state.queue[state.currentIdx],answered=state.answers[state.currentIdx]!==null,area=document.getElementById('scenarioArea');
-var storyHtml=t.story?'<div class="story-box"><div class="story-label">📖 상황 설명</div>'+t.story+'</div>':'';
-var ledHtml='';
-if(t.leds&&t.leds.length>0){ledHtml='<div class="led-panel"><div class="led-title">🔴🟡🟢 장비 상태 표시등</div>';for(var i=0;i<t.leds.length;i++){var l=t.leds[i];var vc=l.status==='red'?'bad':l.status==='amber'?'warn':'';ledHtml+='<div class="led-row"><div class="led '+l.status+'"></div><span class="led-label">'+l.label+'</span><span class="led-val '+vc+'">'+l.val+'</span></div>'}ledHtml+='<div class="led-guide"><span style="color:#0f0">●</span> 정상 <span style="color:#fa0">●</span> 경고 <span style="color:#f00">●</span> 장애 <span style="color:#333">●</span> 꺼짐</div></div>'}
-var sitHtml='<div class="situation-box"><div class="situation-title">📊 현재 상황</div><div class="situation-grid">';var keys=Object.keys(t.context);for(var k=0;k<keys.length;k++){var key=keys[k],v=t.context[key];sitHtml+='<div class="sit-item"><span class="sit-label">'+key+'</span><span class="sit-val '+v.cls+'">'+v.val+'</span></div>'}sitHtml+='</div></div>';
-var infoHtml=ledHtml&&keys.length>0?'<div class="two-col">'+ledHtml+sitHtml+'</div>':ledHtml||sitHtml;
-var optsHtml='';for(var o=0;o<t.options.length;o++){var opt=t.options[o],prosH='',consH='';for(var p=0;p<opt.pros.length;p++)prosH+='<span class="opt-tag pro">✓ '+opt.pros[p]+'</span>';for(var c=0;c<opt.cons.length;c++)consH+='<span class="opt-tag con">✗ '+opt.cons[c]+'</span>';var selCls=answered&&state.answers[state.currentIdx].optIdx===o?' sel':'';var dis=answered?' style="pointer-events:none;opacity:.7"':'';optsHtml+='<div class="opt'+selCls+'" data-opt="'+o+'"'+dis+'><div class="opt-top"><div class="opt-title">'+opt.title+'</div>'+(opt.time?'<div class="opt-time">⏱ '+opt.time+'</div>':'')+'</div><div class="opt-desc">'+opt.desc+'</div><div class="opt-tags">'+prosH+consH+'</div></div>'}
-var hintSection=!answered&&t.hint?'<button class="hint-btn" id="hintBtn">💡 힌트</button>':'';var hintBox=t.hint?'<div class="hint-box" id="hintBox">'+t.hint+'</div>':'';
-area.innerHTML='<div class="scenario-card"><div class="scenario-top '+t.sev+'"><div class="scenario-sev '+t.sev+'">'+(t.sev==='p1'?'P1 — CRITICAL':'P2 — HIGH')+'</div><div class="scenario-h">'+t.title+'</div><div class="scenario-meta"><span>📍 '+t.location+'</span>'+(t.rack!=='-'?'<span>🖥️ '+t.rack+'</span>':'')+'</div></div><div class="scenario-body">'+storyHtml+'<div class="know-box"><div class="know-title">'+t.knowledge.title+'</div><div class="know-desc">'+t.knowledge.desc+'</div></div>'+infoHtml+'<div class="opts-section"><div class="opts-header"><div class="opts-title">⚡ 어떻게 대응하시겠습니까?</div>'+hintSection+'</div>'+hintBox+optsHtml+'</div></div><div class="scenario-foot"><div class="nav-btns"><button class="btn btn-sm" id="prevBtn"'+(state.currentIdx<=0?' disabled':'')+'>←</button><button class="btn btn-sm" id="nextBtn"'+(state.currentIdx>=state.total-1?' disabled':'')+'>→</button></div><button class="btn btn-primary" id="confirmBtn" disabled>'+(answered?'✅ 완료':'확인')+'</button></div></div>';
-if(!answered){state.selectedOpt=null;state.ticketStartTime=Date.now();area.querySelectorAll('.opt').forEach(function(el){el.onclick=function(){state.selectedOpt=parseInt(this.getAttribute('data-opt'));document.querySelectorAll('#scenarioArea .opt').forEach(function(o,j){o.classList.toggle('sel',j===state.selectedOpt)});document.getElementById('confirmBtn').disabled=false}});var hb=document.getElementById('hintBtn');if(hb)hb.onclick=function(){var box=document.getElementById('hintBox');box.classList.toggle('show');this.textContent=box.classList.contains('show')?'💡 숨기기':'💡 힌트'}}
-document.getElementById('prevBtn').onclick=function(){navigateTo(state.currentIdx-1)};document.getElementById('nextBtn').onclick=function(){navigateTo(state.currentIdx+1)};
-if(!answered)document.getElementById('confirmBtn').onclick=function(){confirmAnswer()};window.scrollTo(0,0);
-}
-function confirmAnswer(){
-if(state.selectedOpt===null)return;var t=state.queue[state.currentIdx],opt=t.options[state.selectedOpt];var elapsed=(Date.now()-state.ticketStartTime)/1000;
-state.score+=opt.score;state.resolved++;state.totalTime+=elapsed;if(opt.best)state.correct++;state.answers[state.currentIdx]={optIdx:state.selectedOpt,best:opt.best,score:opt.score};
-renderProgress();showFeedback(opt.best,opt.score>=60,opt.score,opt.explain);
-}
-function showFeedback(isBest,isOk,total,explain){
-var fb=document.getElementById('fbOverlay');fb.className='fb-overlay on '+(isBest?'correct':isOk?'partial':'wrong');
-document.getElementById('fbIcon').textContent=isBest?'✅':isOk?'⚠️':'❌';document.getElementById('fbTitle').textContent=isBest?'Best Practice!':isOk?'괜찮은 선택!':'아쉬워요!';
-document.getElementById('fbTitle').className='fb-title '+(isBest?'good':isOk?'ok':'bad');document.getElementById('fbScore').textContent='+'+total+' pts';document.getElementById('fbExplain').innerHTML=explain;
-var allDone=true;for(var i=0;i<state.answers.length;i++){if(state.answers[i]===null){allDone=false;break}}
-document.getElementById('fbNextBtn').textContent=allDone?'🏆 결과 보기':'다음 문제 →';
-}
-function closeFeedbackAndNext(){
-document.getElementById('fbOverlay').className='fb-overlay';var allDone=true,next=-1;for(var i=0;i<state.answers.length;i++){if(state.answers[i]===null){allDone=false;if(next===-1)next=i}}
-if(allDone){endGame();return}if(next!==-1)navigateTo(next);
-}
-function endGame(){
-var acc=state.resolved>0?Math.round(state.correct/state.resolved*100):0;var avg=state.resolved>0?(state.totalTime/state.resolved).toFixed(1):0;
-var icon='🏆',title='Challenge Complete!',sub='';
-if(acc>=80&&state.score>500){icon='👑';title='데이터센터 마스터!';sub='현장 대응 능력이 탁월합니다!';}else if(acc>=50){icon='🏆';title='훌륭해요!';sub='데이터센터에 대해 많이 배우셨습니다.';}else{icon='💪';title='도전 완료!';sub='데이터센터의 세계, 흥미롭지 않나요?';}
-document.getElementById('resultIcon').textContent=icon;document.getElementById('resultTitle').textContent=title;document.getElementById('resultSub').textContent=sub;document.getElementById('resultScore').textContent=state.score;
-document.getElementById('resultGrid').innerHTML='<div class="result-item"><div class="result-item-label">Resolved</div><div class="result-item-val" style="color:var(--green)">'+state.resolved+'</div></div><div class="result-item"><div class="result-item-label">Best Practice</div><div class="result-item-val" style="color:var(--purple)">'+acc+'%</div></div><div class="result-item"><div class="result-item-label">Avg Time</div><div class="result-item-val" style="color:var(--accent)">'+avg+'s</div></div>';
-showScreen('scrResult');tryUnlockInteractive();
-}
+function renderScenario(){var t=state.queue[state.currentIdx],answered=state.answers[state.currentIdx]!==null,area=document.getElementById('scenarioArea');var storyHtml=t.story?'<div class="story-box"><div class="story-label">📖 상황 설명</div>'+t.story+'</div>':'';var ledHtml='';if(t.leds&&t.leds.length>0){ledHtml='<div class="led-panel"><div class="led-title">🔴🟡🟢 장비 상태 표시등</div>';for(var i=0;i<t.leds.length;i++){var l=t.leds[i];var vc=l.status==='red'?'bad':l.status==='amber'?'warn':'';ledHtml+='<div class="led-row"><div class="led '+l.status+'"></div><span class="led-label">'+l.label+'</span><span class="led-val '+vc+'">'+l.val+'</span></div>'}ledHtml+='<div class="led-guide"><span style="color:#0f0">●</span> 정상 <span style="color:#fa0">●</span> 경고 <span style="color:#f00">●</span> 장애 <span style="color:#333">●</span> 꺼짐</div></div>'}var sitHtml='<div class="situation-box"><div class="situation-title">📊 현재 상황</div><div class="situation-grid">';var keys=Object.keys(t.context);for(var k=0;k<keys.length;k++){var key=keys[k],v=t.context[key];sitHtml+='<div class="sit-item"><span class="sit-label">'+key+'</span><span class="sit-val '+v.cls+'">'+v.val+'</span></div>'}sitHtml+='</div></div>';var infoHtml=ledHtml&&keys.length>0?'<div class="two-col">'+ledHtml+sitHtml+'</div>':ledHtml||sitHtml;var optsHtml='';for(var o=0;o<t.options.length;o++){var opt=t.options[o],prosH='',consH='';for(var p=0;p<opt.pros.length;p++)prosH+='<span class="opt-tag pro">✓ '+opt.pros[p]+'</span>';for(var c=0;c<opt.cons.length;c++)consH+='<span class="opt-tag con">✗ '+opt.cons[c]+'</span>';var selCls=answered&&state.answers[state.currentIdx].optIdx===o?' sel':'';var dis=answered?' style="pointer-events:none;opacity:.7"':'';optsHtml+='<div class="opt'+selCls+'" data-opt="'+o+'"'+dis+'><div class="opt-top"><div class="opt-title">'+opt.title+'</div>'+(opt.time?'<div class="opt-time">⏱ '+opt.time+'</div>':'')+'</div><div class="opt-desc">'+opt.desc+'</div><div class="opt-tags">'+prosH+consH+'</div></div>'}var hintSection=!answered&&t.hint?'<button class="hint-btn" id="hintBtn">💡 힌트</button>':'';var hintBox=t.hint?'<div class="hint-box" id="hintBox">'+t.hint+'</div>':'';area.innerHTML='<div class="scenario-card"><div class="scenario-top '+t.sev+'"><div class="scenario-sev '+t.sev+'">'+(t.sev==='p1'?'P1 — CRITICAL':'P2 — HIGH')+'</div><div class="scenario-h">'+t.title+'</div><div class="scenario-meta"><span>📍 '+t.location+'</span>'+(t.rack!=='-'?'<span>🖥️ '+t.rack+'</span>':'')+'</div></div><div class="scenario-body">'+storyHtml+'<div class="know-box"><div class="know-title">'+t.knowledge.title+'</div><div class="know-desc">'+t.knowledge.desc+'</div></div>'+infoHtml+'<div class="opts-section"><div class="opts-header"><div class="opts-title">⚡ 어떻게 대응하시겠습니까?</div>'+hintSection+'</div>'+hintBox+optsHtml+'</div></div><div class="scenario-foot"><div class="nav-btns"><button class="btn btn-sm" id="prevBtn"'+(state.currentIdx<=0?' disabled':'')+'>←</button><button class="btn btn-sm" id="nextBtn"'+(state.currentIdx>=state.total-1?' disabled':'')+'>→</button></div><button class="btn btn-primary" id="confirmBtn" disabled>'+(answered?'✅ 완료':'확인')+'</button></div></div>';if(!answered){state.selectedOpt=null;state.ticketStartTime=Date.now();area.querySelectorAll('.opt').forEach(function(el){el.onclick=function(){state.selectedOpt=parseInt(this.getAttribute('data-opt'));document.querySelectorAll('#scenarioArea .opt').forEach(function(o,j){o.classList.toggle('sel',j===state.selectedOpt)});document.getElementById('confirmBtn').disabled=false}});var hb=document.getElementById('hintBtn');if(hb)hb.onclick=function(){var box=document.getElementById('hintBox');box.classList.toggle('show');this.textContent=box.classList.contains('show')?'💡 숨기기':'💡 힌트'}}document.getElementById('prevBtn').onclick=function(){navigateTo(state.currentIdx-1)};document.getElementById('nextBtn').onclick=function(){navigateTo(state.currentIdx+1)};if(!answered)document.getElementById('confirmBtn').onclick=function(){confirmAnswer()};window.scrollTo(0,0)}
+function confirmAnswer(){if(state.selectedOpt===null)return;var t=state.queue[state.currentIdx],opt=t.options[state.selectedOpt];var elapsed=(Date.now()-state.ticketStartTime)/1000;state.score+=opt.score;state.resolved++;state.totalTime+=elapsed;if(opt.best)state.correct++;state.answers[state.currentIdx]={optIdx:state.selectedOpt,best:opt.best,score:opt.score};renderProgress();showFeedback(opt.best,opt.score>=60,opt.score,opt.explain)}
+function showFeedback(isBest,isOk,total,explain){var fb=document.getElementById('fbOverlay');fb.className='fb-overlay on '+(isBest?'correct':isOk?'partial':'wrong');document.getElementById('fbIcon').textContent=isBest?'✅':isOk?'⚠️':'❌';document.getElementById('fbTitle').textContent=isBest?'Best Practice!':isOk?'괜찮은 선택!':'아쉬워요!';document.getElementById('fbTitle').className='fb-title '+(isBest?'good':isOk?'ok':'bad');document.getElementById('fbScore').textContent='+'+total+' pts';document.getElementById('fbExplain').innerHTML=explain;var allDone=true;for(var i=0;i<state.answers.length;i++){if(state.answers[i]===null){allDone=false;break}}document.getElementById('fbNextBtn').textContent=allDone?'🏆 결과 보기':'다음 문제 →'}
+function closeFeedbackAndNext(){document.getElementById('fbOverlay').className='fb-overlay';var allDone=true,next=-1;for(var i=0;i<state.answers.length;i++){if(state.answers[i]===null){allDone=false;if(next===-1)next=i}}if(allDone){endGame();return}if(next!==-1)navigateTo(next)}
+function endGame(){var acc=state.resolved>0?Math.round(state.correct/state.resolved*100):0;var avg=state.resolved>0?(state.totalTime/state.resolved).toFixed(1):0;var icon='🏆',title='Challenge Complete!',sub='';if(acc>=80&&state.score>500){icon='👑';title='데이터센터 마스터!';sub='현장 대응 능력이 탁월합니다!'}else if(acc>=50){icon='🏆';title='훌륭해요!';sub='데이터센터에 대해 많이 배우셨습니다.'}else{icon='💪';title='도전 완료!';sub='데이터센터의 세계, 흥미롭지 않나요?'}document.getElementById('resultIcon').textContent=icon;document.getElementById('resultTitle').textContent=title;document.getElementById('resultSub').textContent=sub;document.getElementById('resultScore').textContent=state.score;document.getElementById('resultGrid').innerHTML='<div class="result-item"><div class="result-item-label">Resolved</div><div class="result-item-val" style="color:var(--green)">'+state.resolved+'</div></div><div class="result-item"><div class="result-item-label">Best Practice</div><div class="result-item-val" style="color:var(--purple)">'+acc+'%</div></div><div class="result-item"><div class="result-item-label">Avg Time</div><div class="result-item-val" style="color:var(--accent)">'+avg+'s</div></div>';showScreen('scrResult');tryUnlockInteractive()}
 
-function startPersonality(){
-var pool=PERSONALITY.slice();shuffle(pool);
-pState={queue:pool.slice(0,10),currentIdx:0,answers:new Array(10).fill(null),scores:{DCO:0,DCEO:0,SEC:0,GND:0,LOG:0,PRJ:0}};
-showScreen('scrPersonality');renderPProgress();renderPQuestion();
-}
-function renderPProgress(){
-document.getElementById('pProgressLabel').textContent='Q'+(pState.currentIdx+1)+'/'+pState.queue.length;
-var d='';for(var i=0;i<pState.queue.length;i++){var c='pdot';if(pState.answers[i]!==null)c+=' done';if(i===pState.currentIdx)c+=' current';d+='<div class="'+c+'" data-pdot="'+i+'"></div>'}
-document.getElementById('pProgressDots').innerHTML=d;
-document.querySelectorAll('#pProgressDots .pdot').forEach(function(el){el.onclick=function(){pNavigate(parseInt(this.getAttribute('data-pdot')))}});
-}
+function startPersonality(){var pool=PERSONALITY.slice();shuffle(pool);pState={queue:pool.slice(0,10),currentIdx:0,answers:new Array(10).fill(null),scores:{DCO:0,DCEO:0,SEC:0,GND:0,LOG:0,PRJ:0}};showScreen('scrPersonality');renderPProgress();renderPQuestion()}
+function renderPProgress(){document.getElementById('pProgressLabel').textContent='Q'+(pState.currentIdx+1)+'/'+pState.queue.length;var d='';for(var i=0;i<pState.queue.length;i++){var c='pdot';if(pState.answers[i]!==null)c+=' done';if(i===pState.currentIdx)c+=' current';d+='<div class="'+c+'" data-pdot="'+i+'"></div>'}document.getElementById('pProgressDots').innerHTML=d;document.querySelectorAll('#pProgressDots .pdot').forEach(function(el){el.onclick=function(){pNavigate(parseInt(this.getAttribute('data-pdot')))}})}
 function pNavigate(idx){if(idx<0||idx>=pState.queue.length)return;pState.currentIdx=idx;renderPProgress();renderPQuestion()}
+function renderPQuestion(){var q=pState.queue[pState.currentIdx],answered=pState.answers[pState.currentIdx]!==null,area=document.getElementById('pArea');var scenarioHtml=q.scenario?'<div class="pq-scenario"><div class="pq-scenario-label">📖 상황</div>'+q.scenario+'</div>':'';var optsHtml='';for(var i=0;i<q.opts.length;i++){var selCls=answered&&pState.answers[pState.currentIdx]===i?' sel':'';optsHtml+='<div class="pq-opt'+selCls+'" data-popt="'+i+'">'+q.opts[i].text+'</div>'}var allDone=true;for(var i=0;i<pState.answers.length;i++){if(pState.answers[i]===null){allDone=false;break}}var nextLabel=allDone?'🏆 결과 보기':'다음 →';var nextDisabled=!answered?' disabled':'';area.innerHTML='<div class="pq-card"><div class="pq-top"><div class="pq-h">🧑‍💼 나의 InfraOps 직무는?</div><div class="pq-sub">정답이 없는 성향 테스트입니다. 편하게 선택하세요!</div></div><div class="pq-body">'+scenarioHtml+'<div class="pq-question">'+q.q+'</div>'+optsHtml+'</div><div class="pq-foot"><div class="nav-btns"><button class="btn btn-sm" id="pPrevBtn"'+(pState.currentIdx<=0?' disabled':'')+'>←</button><button class="btn btn-sm" id="pNextBtn"'+(pState.currentIdx>=pState.queue.length-1&&!allDone?' disabled':'')+'>→</button></div><button class="btn btn-primary" id="pConfirmBtn"'+nextDisabled+'>'+nextLabel+'</button></div></div>';area.querySelectorAll('.pq-opt').forEach(function(el){el.onclick=function(){var idx=parseInt(this.getAttribute('data-popt'));var prev=pState.answers[pState.currentIdx];if(prev!==null){var prevScores=pState.queue[pState.currentIdx].opts[prev].scores;var prevKeys=Object.keys(prevScores);for(var s=0;s<prevKeys.length;s++)pState.scores[prevKeys[s]]-=prevScores[prevKeys[s]]}if(prev===idx){pState.answers[pState.currentIdx]=null;area.querySelectorAll('.pq-opt').forEach(function(o){o.classList.remove('sel');o.style.opacity='1'});document.getElementById('pConfirmBtn').disabled=true;renderPProgress();return}pState.answers[pState.currentIdx]=idx;var scores=q.opts[idx].scores;var keys=Object.keys(scores);for(var s=0;s<keys.length;s++)pState.scores[keys[s]]+=scores[keys[s]];area.querySelectorAll('.pq-opt').forEach(function(o,j){o.classList.toggle('sel',j===idx);o.style.opacity=j===idx?'1':'.7'});document.getElementById('pConfirmBtn').disabled=false;renderPProgress()}});document.getElementById('pPrevBtn').onclick=function(){pNavigate(pState.currentIdx-1)};document.getElementById('pNextBtn').onclick=function(){pNavigate(pState.currentIdx+1)};document.getElementById('pConfirmBtn').onclick=function(){var allDone=true;for(var i=0;i<pState.answers.length;i++){if(pState.answers[i]===null){allDone=false;break}}if(allDone){showPResult();return}var next=pState.currentIdx+1;if(next<pState.queue.length)pNavigate(next)};window.scrollTo(0,0)}
 
-function renderPQuestion(){
-var q=pState.queue[pState.currentIdx],answered=pState.answers[pState.currentIdx]!==null,area=document.getElementById('pArea');
-var scenarioHtml=q.scenario?'<div class="pq-scenario"><div class="pq-scenario-label">📖 상황</div>'+q.scenario+'</div>':'';
-var optsHtml='';
-for(var i=0;i<q.opts.length;i++){
-var selCls=answered&&pState.answers[pState.currentIdx]===i?' sel':'';
-optsHtml+='<div class="pq-opt'+selCls+'" data-popt="'+i+'">'+q.opts[i].text+'</div>';
-}
-var allDone=true;for(var i=0;i<pState.answers.length;i++){if(pState.answers[i]===null){allDone=false;break}}
-var nextLabel=allDone?'🏆 결과 보기':'다음 →';
-var nextDisabled=!answered?' disabled':'';
-area.innerHTML='<div class="pq-card"><div class="pq-top"><div class="pq-h">🧑‍💼 나의 InfraOps 직무는?</div><div class="pq-sub">정답이 없는 성향 테스트입니다. 편하게 선택하세요!</div></div><div class="pq-body">'+scenarioHtml+'<div class="pq-question">'+q.q+'</div>'+optsHtml+'</div><div class="pq-foot"><div class="nav-btns"><button class="btn btn-sm" id="pPrevBtn"'+(pState.currentIdx<=0?' disabled':'')+'>←</button><button class="btn btn-sm" id="pNextBtn"'+(pState.currentIdx>=pState.queue.length-1&&!allDone?' disabled':'')+'>→</button></div><button class="btn btn-primary" id="pConfirmBtn"'+nextDisabled+'>'+nextLabel+'</button></div></div>';
-area.querySelectorAll('.pq-opt').forEach(function(el){el.onclick=function(){
-var idx=parseInt(this.getAttribute('data-popt'));var prev=pState.answers[pState.currentIdx];
-if(prev!==null){var prevScores=pState.queue[pState.currentIdx].opts[prev].scores;var prevKeys=Object.keys(prevScores);for(var s=0;s<prevKeys.length;s++)pState.scores[prevKeys[s]]-=prevScores[prevKeys[s]]}
-if(prev===idx){pState.answers[pState.currentIdx]=null;area.querySelectorAll('.pq-opt').forEach(function(o){o.classList.remove('sel');o.style.opacity='1'});document.getElementById('pConfirmBtn').disabled=true;renderPProgress();return}
-pState.answers[pState.currentIdx]=idx;var scores=q.opts[idx].scores;var keys=Object.keys(scores);for(var s=0;s<keys.length;s++)pState.scores[keys[s]]+=scores[keys[s]];
-area.querySelectorAll('.pq-opt').forEach(function(o,j){o.classList.toggle('sel',j===idx);o.style.opacity=j===idx?'1':'.7'});
-document.getElementById('pConfirmBtn').disabled=false;renderPProgress();
-}});
-document.getElementById('pPrevBtn').onclick=function(){pNavigate(pState.currentIdx-1)};
-document.getElementById('pNextBtn').onclick=function(){pNavigate(pState.currentIdx+1)};
-document.getElementById('pConfirmBtn').onclick=function(){
-var allDone=true;for(var i=0;i<pState.answers.length;i++){if(pState.answers[i]===null){allDone=false;break}}
-if(allDone){showPResult();return}
-var next=pState.currentIdx+1;if(next<pState.queue.length)pNavigate(next);
-};
-window.scrollTo(0,0);
-}
+function showPResult(){var scores=pState.scores,maxKey='DCO',maxVal=0;var keys=Object.keys(scores);for(var i=0;i<keys.length;i++){if(scores[keys[i]]>maxVal){maxVal=scores[keys[i]];maxKey=keys[i]}}var total=0;for(var i=0;i<keys.length;i++)total+=scores[keys[i]];if(total===0)total=1;var job=JOB_DATA[maxKey];myJobKey=maxKey;expandedBarKey=maxKey;var barsHtml='';var sorted=keys.slice().sort(function(a,b){return scores[b]-scores[a]});for(var i=0;i<sorted.length;i++){var k=sorted[i],pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;var isExpanded=k===expandedBarKey;barsHtml+='<div class="pr-bar-item'+(isExpanded?' active':'')+'" data-barkey="'+k+'" onclick="toggleBarExpand(\''+k+'\')">';barsHtml+='<div class="pr-bar-label"><span>'+j.icon+' '+j.name+(isBest?' <span class="pr-bar-my-tag">⭐ MY</span>':'')+'</span><span>'+pct+'%'+(isBest?' ★':'')+'  ▼</span></div>';barsHtml+='<div class="pr-bar-track"><div class="pr-bar-fill'+(isBest?' best':'')+'" style="width:'+pct+'%;background:'+(isBest?'':j.color)+'"></div></div>';barsHtml+='<div class="pr-bar-expand'+(isExpanded?' open':'')+'" id="barExpand_'+k+'">'+buildBarExpandContent(k)+'</div>';barsHtml+='</div>'}var rolesHtml='';for(var r=0;r<job.roles.length;r++){var role=job.roles[r];rolesHtml+='<div class="pr-role"><div class="pr-role-icon">'+role.icon+'</div><div><div class="pr-role-title">'+role.title+'</div><div class="pr-role-desc">'+role.desc+'</div></div></div>'}document.getElementById('prArea').innerHTML='<div class="pr-card"><div class="pr-top"><div class="pr-icon">'+job.icon+'</div><div class="pr-type">당신에게 어울리는 InfraOps 직무는...</div><div class="pr-name">'+job.name+' — '+job.full+'</div><div class="pr-catch">"'+job.catch+'"</div></div><div class="pr-body"><div class="pr-note">'+job.sub+'</div><div class="pr-desc">'+job.desc.replace(/\n/g,'<br>')+'</div><div class="pr-roles">'+rolesHtml+'</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">📊 당신의 성향 분석</div><div class="pr-bar-tap-hint">👆 각 직무를 눌러 자세히 알아보세요</div><div class="pr-bars">'+barsHtml+'</div></div><div class="pr-actions"><button class="btn btn-primary" id="prCapture">📸 결과 캡처</button><button class="btn btn-primary" id="prRetry">🔄 다시 테스트</button><button class="btn" id="prHome">← 메인으로</button></div></div>';showScreen('scrPResult');setTimeout(function(){document.querySelectorAll('.pr-bar-fill').forEach(function(el){var w=el.style.width;el.style.width='0';setTimeout(function(){el.style.width=w},50)})},100);document.getElementById('prCapture').onclick=function(){captureResult(maxKey,sorted,total)};document.getElementById('prRetry').onclick=function(){startPersonality()};document.getElementById('prHome').onclick=function(){showScreen('scrLanding')};tryUnlockInteractive()}
 
-function showPResult(){
-var scores=pState.scores,maxKey='DCO',maxVal=0;
-var keys=Object.keys(scores);
-for(var i=0;i<keys.length;i++){if(scores[keys[i]]>maxVal){maxVal=scores[keys[i]];maxKey=keys[i]}}
-var total=0;for(var i=0;i<keys.length;i++)total+=scores[keys[i]];if(total===0)total=1;
-var job=JOB_DATA[maxKey];
-myJobKey=maxKey;
-expandedBarKey=maxKey;
+function buildBarExpandContent(jobKey){var jd=JOB_DATA[jobKey];var h='<div class="pr-bar-expand-inner">';h+='<div class="pr-bar-expand-top"><div class="pr-bar-expand-icon">'+jd.icon+'</div><div><div class="pr-bar-expand-name">'+jd.name+'</div><div class="pr-bar-expand-full">'+jd.full+'</div></div></div>';h+='<div class="pr-bar-expand-catch">"'+jd.catch+'"</div>';h+='<div class="pr-bar-expand-desc">'+jd.desc.replace(/\n/g,'<br>')+'</div>';h+='<div style="font-size:11px;font-weight:700;margin-bottom:6px">💼 주요 역할</div>';h+='<div class="pr-bar-expand-roles">';for(var r=0;r<jd.roles.length;r++){var role=jd.roles[r];h+='<div class="pr-bar-expand-role"><div class="pr-bar-expand-role-icon">'+role.icon+'</div><div><div class="pr-bar-expand-role-title">'+role.title+'</div><div class="pr-bar-expand-role-desc">'+role.desc+'</div></div></div>'}h+='</div></div>';return h}
 
-var barsHtml='';
-var sorted=keys.slice().sort(function(a,b){return scores[b]-scores[a]});
-for(var i=0;i<sorted.length;i++){
-var k=sorted[i],pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;
-var isExpanded=k===expandedBarKey;
-barsHtml+='<div class="pr-bar-item'+(isExpanded?' active':'')+'" data-barkey="'+k+'" onclick="toggleBarExpand(\''+k+'\')">';
-barsHtml+='<div class="pr-bar-label"><span>'+j.icon+' '+j.name+(isBest?' <span class="pr-bar-my-tag">⭐ MY</span>':'')+'</span><span>'+pct+'%'+(isBest?' ★':'')+'  ▼</span></div>';
-barsHtml+='<div class="pr-bar-track"><div class="pr-bar-fill'+(isBest?' best':'')+'" style="width:'+pct+'%;background:'+(isBest?'':j.color)+'"></div></div>';
-barsHtml+='<div class="pr-bar-expand'+(isExpanded?' open':'')+'" id="barExpand_'+k+'">'+buildBarExpandContent(k)+'</div>';
-barsHtml+='</div>';
-}
-
-var rolesHtml='';
-for(var r=0;r<job.roles.length;r++){
-var role=job.roles[r];
-rolesHtml+='<div class="pr-role"><div class="pr-role-icon">'+role.icon+'</div><div><div class="pr-role-title">'+role.title+'</div><div class="pr-role-desc">'+role.desc+'</div></div></div>';
-}
-
-document.getElementById('prArea').innerHTML='<div class="pr-card"><div class="pr-top"><div class="pr-icon">'+job.icon+'</div><div class="pr-type">당신에게 어울리는 InfraOps 직무는...</div><div class="pr-name">'+job.name+' — '+job.full+'</div><div class="pr-catch">"'+job.catch+'"</div></div><div class="pr-body"><div class="pr-note">'+job.sub+'</div><div class="pr-desc">'+job.desc.replace(/\n/g,'<br>')+'</div><div class="pr-roles">'+rolesHtml+'</div><div style="font-size:13px;font-weight:700;margin-bottom:4px">📊 당신의 성향 분석</div><div class="pr-bar-tap-hint">👆 각 직무를 눌러 자세히 알아보세요</div><div class="pr-bars">'+barsHtml+'</div></div><div class="pr-actions"><button class="btn btn-primary" id="prCapture">📸 결과 캡처</button><button class="btn btn-primary" id="prRetry">🔄 다시 테스트</button><button class="btn" id="prHome">← 메인으로</button></div></div>';
-
-showScreen('scrPResult');
-setTimeout(function(){document.querySelectorAll('.pr-bar-fill').forEach(function(el){var w=el.style.width;el.style.width='0';setTimeout(function(){el.style.width=w},50)})},100);
-document.getElementById('prCapture').onclick=function(){captureResult(maxKey,sorted,total)};
-document.getElementById('prRetry').onclick=function(){startPersonality()};
-document.getElementById('prHome').onclick=function(){showScreen('scrLanding')};
-tryUnlockInteractive();
-}
-
-function buildBarExpandContent(jobKey){
-var jd=JOB_DATA[jobKey];
-var h='<div class="pr-bar-expand-inner">';
-h+='<div class="pr-bar-expand-top"><div class="pr-bar-expand-icon">'+jd.icon+'</div><div><div class="pr-bar-expand-name">'+jd.name+'</div><div class="pr-bar-expand-full">'+jd.full+'</div></div></div>';
-h+='<div class="pr-bar-expand-catch">"'+jd.catch+'"</div>';
-h+='<div class="pr-bar-expand-desc">'+jd.desc.replace(/\n/g,'<br>')+'</div>';
-h+='<div style="font-size:11px;font-weight:700;margin-bottom:6px">💼 주요 역할</div>';
-h+='<div class="pr-bar-expand-roles">';
-for(var r=0;r<jd.roles.length;r++){
-var role=jd.roles[r];
-h+='<div class="pr-bar-expand-role"><div class="pr-bar-expand-role-icon">'+role.icon+'</div><div><div class="pr-bar-expand-role-title">'+role.title+'</div><div class="pr-bar-expand-role-desc">'+role.desc+'</div></div></div>';
-}
-h+='</div></div>';
-return h;
-}
-
-function toggleBarExpand(key){
-var allItems=document.querySelectorAll('.pr-bar-item');
-var allExpands=document.querySelectorAll('.pr-bar-expand');
-if(expandedBarKey===key){
-expandedBarKey=null;
-allItems.forEach(function(el){el.classList.remove('active')});
-allExpands.forEach(function(el){el.classList.remove('open')});
-return;
-}
-expandedBarKey=key;
-allItems.forEach(function(el){el.classList.toggle('active',el.getAttribute('data-barkey')===key)});
-allExpands.forEach(function(el){el.classList.toggle('open',el.id==='barExpand_'+key)});
-setTimeout(function(){
-var target=document.getElementById('barExpand_'+key);
-if(target)target.scrollIntoView({behavior:'smooth',block:'nearest'});
-},100);
-}
+function toggleBarExpand(key){var allItems=document.querySelectorAll('.pr-bar-item');var allExpands=document.querySelectorAll('.pr-bar-expand');if(expandedBarKey===key){expandedBarKey=null;allItems.forEach(function(el){el.classList.remove('active')});allExpands.forEach(function(el){el.classList.remove('open')});return}expandedBarKey=key;allItems.forEach(function(el){el.classList.toggle('active',el.getAttribute('data-barkey')===key)});allExpands.forEach(function(el){el.classList.toggle('open',el.id==='barExpand_'+key)});setTimeout(function(){var target=document.getElementById('barExpand_'+key);if(target)target.scrollIntoView({behavior:'smooth',block:'nearest'})},100)}
 
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}}
 
-function updateBadgeUI(){
-var data=getBadgeData(),count=Object.keys(data.zones).length;
-document.getElementById('hdrBadgeCnt').textContent=count+'/3';
-var hub=document.getElementById('badgeHub');
-var h='<div class="badge-hub-top"><div class="badge-hub-title">🏅 뱃지 컬렉션</div><div class="badge-hub-count">'+count+' / 3</div></div><div class="badge-hub-zones">';
-ZONES.forEach(function(z){var done=!!data.zones[z.id];h+='<div class="badge-hub-zone '+(done?'done':'')+'"><div class="badge-hub-zone-icon">'+(done?z.badge.icon:'🔒')+'</div><div class="badge-hub-zone-name">'+z.name.replace(' 존','')+'</div><div class="badge-hub-zone-status">'+(done?'✅ 획득':'미방문')+'</div></div>'});
-h+='</div>';h+=count>=3?'<div class="badge-hub-cta">🎉 <span style="color:var(--orange);font-weight:700">올 클리어!</span> 기념품을 수령하세요!</div>':'<div class="badge-hub-cta">3개 존을 모두 체험하면 🎁 특별 기념품!</div>';
-hub.innerHTML=h;
-}
+function updateBadgeUI(){var data=getBadgeData(),count=Object.keys(data.zones).length;document.getElementById('hdrBadgeCnt').textContent=count+'/3';var hub=document.getElementById('badgeHub');var h='<div class="badge-hub-top"><div class="badge-hub-title">🏅 뱃지 컬렉션</div><div class="badge-hub-count">'+count+' / 3</div></div><div class="badge-hub-zones">';ZONES.forEach(function(z){var done=!!data.zones[z.id];h+='<div class="badge-hub-zone '+(done?'done':'')+'"><div class="badge-hub-zone-icon">'+(done?z.badge.icon:'🔒')+'</div><div class="badge-hub-zone-name">'+z.name.replace(' 존','')+'</div><div class="badge-hub-zone-status">'+(done?'✅ 획득':'미방문')+'</div></div>'});h+='</div>';h+=count>=3?'<div class="badge-hub-cta">🎉 <span style="color:var(--orange);font-weight:700">올 클리어!</span> 기념품을 수령하세요!</div>':'<div class="badge-hub-cta">3개 존을 모두 체험하면 🎁 특별 기념품!</div>';hub.innerHTML=h}
 function showBadgeScreen(){showScreen('scrBadge');renderBadgeScreen()}
-function renderBadgeScreen(){
-var data=getBadgeData(),count=Object.keys(data.zones).length,offset=327-(count/3)*327;
-var h='<div class="badge-header"><div class="badge-header-icon">🏅</div><div class="badge-header-title">뱃지 컬렉션</div><div class="badge-header-sub">3개 Interact Zone을 체험하고 뱃지를 모으세요!</div></div>';
-h+='<div class="badge-ring-wrap"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="52" fill="none" stroke="#21262d" stroke-width="8"/><circle cx="65" cy="65" r="52" fill="none" stroke="#ff9900" stroke-width="8" stroke-dasharray="327" stroke-dashoffset="'+offset+'" stroke-linecap="round" transform="rotate(-90 65 65)" style="transition:stroke-dashoffset 1s ease"/><text x="65" y="60" text-anchor="middle" font-size="32" font-weight="900" font-family="JetBrains Mono,monospace" fill="#ff9900">'+count+'/3</text><text x="65" y="80" text-anchor="middle" font-size="10" fill="#8b949e">수집 완료</text></svg></div>';
-if(count>=3)h+='<div class="badge-complete-banner show"><div class="badge-complete-icon">🎉</div><div class="badge-complete-title">축하합니다! 올 클리어!</div><div class="badge-complete-desc">3개 Interact Zone을 모두 체험하셨습니다!<br>AWS Data Center 부스에서 특별 기념품을 수령하세요! 🎁</div></div>';
-ZONES.forEach(function(z){var done=!!data.zones[z.id],time=done?new Date(data.zones[z.id]).toLocaleString('ko-KR'):'';h+='<div class="badge-zone-card '+(done?'done':'')+'"><div class="badge-zone-card-inner"><div class="badge-zone-card-icon">'+(done?z.badge.icon:z.icon)+'</div><div class="badge-zone-card-info"><div class="badge-zone-card-name">'+z.name+'</div><div class="badge-zone-card-desc">'+(done?z.badge.name+' — '+z.badge.desc:z.subtitle)+'</div>'+(done?'<div class="badge-zone-card-time">✅ '+time+'</div>':'')+'</div><div class="badge-zone-card-check">'+(done?'✅':'⬜')+'</div></div></div>'});
-h+='<div class="code-section"><div class="code-section-title">🔑 Zone 인증번호 입력</div><div class="code-section-desc">Infra 체험 존, CSR 존에서 받은<br>인증번호를 입력하세요</div><div class="code-input-row"><div class="code-boxes" id="codeBoxes"><input type="text" maxlength="1" class="code-box" data-idx="0" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="1" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="2" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="3" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="4" inputmode="text" autocomplete="off"></div></div><div style="margin-top:12px"><button class="btn btn-primary" id="codeSubmitBtn" onclick="submitCode()" disabled>확인</button></div><div class="code-feedback" id="codeFeedback"></div></div>';
-h+='<div style="text-align:center;margin-top:4px"><button class="btn" onclick="showScreen(\'scrLanding\');updateBadgeUI()">← 메인으로</button></div>';
-document.getElementById('badgeScreenContent').innerHTML=h;initCodeBoxes();
-}
-function initCodeBoxes(){
-var boxes=document.querySelectorAll('.code-box');
-boxes.forEach(function(box,i){
-box.addEventListener('input',function(){this.value=this.value.toUpperCase();if(this.value&&i<boxes.length-1)boxes[i+1].focus();checkCodeComplete()});
-box.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!this.value&&i>0){boxes[i-1].focus();boxes[i-1].value=''}if(e.key==='Enter')submitCode()});
-box.addEventListener('paste',function(e){e.preventDefault();var paste=(e.clipboardData||window.clipboardData).getData('text').toUpperCase().replace(/[^A-Z0-9]/g,'');for(var j=0;j<paste.length&&(i+j)<boxes.length;j++)boxes[i+j].value=paste[j];checkCodeComplete()});
-});
-}
+function renderBadgeScreen(){var data=getBadgeData(),count=Object.keys(data.zones).length,offset=327-(count/3)*327;var h='<div class="badge-header"><div class="badge-header-icon">🏅</div><div class="badge-header-title">뱃지 컬렉션</div><div class="badge-header-sub">3개 Interact Zone을 체험하고 뱃지를 모으세요!</div></div>';h+='<div class="badge-ring-wrap"><svg viewBox="0 0 130 130"><circle cx="65" cy="65" r="52" fill="none" stroke="#21262d" stroke-width="8"/><circle cx="65" cy="65" r="52" fill="none" stroke="#ff9900" stroke-width="8" stroke-dasharray="327" stroke-dashoffset="'+offset+'" stroke-linecap="round" transform="rotate(-90 65 65)" style="transition:stroke-dashoffset 1s ease"/><text x="65" y="60" text-anchor="middle" font-size="32" font-weight="900" font-family="JetBrains Mono,monospace" fill="#ff9900">'+count+'/3</text><text x="65" y="80" text-anchor="middle" font-size="10" fill="#8b949e">수집 완료</text></svg></div>';if(count>=3)h+='<div class="badge-complete-banner show"><div class="badge-complete-icon">🎉</div><div class="badge-complete-title">축하합니다! 올 클리어!</div><div class="badge-complete-desc">3개 Interact Zone을 모두 체험하셨습니다!<br>AWS Data Center 부스에서 특별 기념품을 수령하세요! 🎁</div></div>';ZONES.forEach(function(z){var done=!!data.zones[z.id],time=done?new Date(data.zones[z.id]).toLocaleString('ko-KR'):'';h+='<div class="badge-zone-card '+(done?'done':'')+'"><div class="badge-zone-card-inner"><div class="badge-zone-card-icon">'+(done?z.badge.icon:z.icon)+'</div><div class="badge-zone-card-info"><div class="badge-zone-card-name">'+z.name+'</div><div class="badge-zone-card-desc">'+(done?z.badge.name+' — '+z.badge.desc:z.subtitle)+'</div>'+(done?'<div class="badge-zone-card-time">✅ '+time+'</div>':'')+'</div><div class="badge-zone-card-check">'+(done?'✅':'⬜')+'</div></div></div>'});h+='<div class="code-section"><div class="code-section-title">🔑 Zone 인증번호 입력</div><div class="code-section-desc">Infra 체험 존, CSR 존에서 받은<br>인증번호를 입력하세요</div><div class="code-input-row"><div class="code-boxes" id="codeBoxes"><input type="text" maxlength="1" class="code-box" data-idx="0" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="1" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="2" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="3" inputmode="text" autocomplete="off"><input type="text" maxlength="1" class="code-box" data-idx="4" inputmode="text" autocomplete="off"></div></div><div style="margin-top:12px"><button class="btn btn-primary" id="codeSubmitBtn" onclick="submitCode()" disabled>확인</button></div><div class="code-feedback" id="codeFeedback"></div></div>';h+='<div style="text-align:center;margin-top:4px"><button class="btn" onclick="showScreen(\'scrLanding\');updateBadgeUI()">← 메인으로</button></div>';document.getElementById('badgeScreenContent').innerHTML=h;initCodeBoxes()}
+function initCodeBoxes(){var boxes=document.querySelectorAll('.code-box');boxes.forEach(function(box,i){box.addEventListener('input',function(){this.value=this.value.toUpperCase();if(this.value&&i<boxes.length-1)boxes[i+1].focus();checkCodeComplete()});box.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!this.value&&i>0){boxes[i-1].focus();boxes[i-1].value=''}if(e.key==='Enter')submitCode()});box.addEventListener('paste',function(e){e.preventDefault();var paste=(e.clipboardData||window.clipboardData).getData('text').toUpperCase().replace(/[^A-Z0-9]/g,'');for(var j=0;j<paste.length&&(i+j)<boxes.length;j++)boxes[i+j].value=paste[j];checkCodeComplete()})})}
 function checkCodeComplete(){var boxes=document.querySelectorAll('.code-box'),code='';boxes.forEach(function(b){code+=b.value});var btn=document.getElementById('codeSubmitBtn');if(btn)btn.disabled=code.length<5}
-function submitCode(){
-var boxes=document.querySelectorAll('.code-box'),code='';boxes.forEach(function(b){code+=b.value});code=code.toUpperCase();
-var feedback=document.getElementById('codeFeedback'),zone=ZONES.find(function(z){return z.code===code});
-if(!zone){feedback.innerHTML='<span style="color:var(--red)">❌ 유효하지 않은 코드입니다</span>';document.getElementById('codeBoxes').style.animation='badgeShake .4s ease';setTimeout(function(){document.getElementById('codeBoxes').style.animation=''},400);return}
-var data=getBadgeData();if(data.zones[zone.id]){feedback.innerHTML='<span style="color:var(--accent)">✅ 이미 획득한 뱃지입니다!</span>';return}
-data.zones[zone.id]=Date.now();saveBadgeData(data);boxes.forEach(function(b){b.value='';b.classList.add('success')});feedback.innerHTML='';
-setTimeout(function(){boxes.forEach(function(b){b.classList.remove('success')});showUnlockAnim(zone)},300);
-}
-function tryUnlockInteractive(){
-var data=getBadgeData();if(data.zones['zone_interactive'])return;
-data.zones['zone_interactive']=Date.now();saveBadgeData(data);
-var zone=ZONES.find(function(z){return z.id==='zone_interactive'});
-setTimeout(function(){showUnlockAnim(zone)},800);
-}
-function showUnlockAnim(zone){
-document.getElementById('unlockIcon').textContent=zone.badge.icon;document.getElementById('unlockName').textContent=zone.badge.name;
-document.getElementById('unlockDesc').textContent=zone.badge.desc;document.getElementById('unlockZone').textContent='📍 '+zone.name;
-document.getElementById('badgeUnlockOverlay').classList.add('on');createConfetti();
-}
-function closeUnlockAnim(){
-document.getElementById('badgeUnlockOverlay').classList.remove('on');updateBadgeUI();
-var data=getBadgeData();if(Object.keys(data.zones).length>=3){setTimeout(function(){createConfetti();setTimeout(createConfetti,400);setTimeout(createConfetti,800);showBadgeToast('🎉 올 클리어! 부스에서 기념품을 수령하세요!')},400)}
-if(document.getElementById('scrBadge').classList.contains('on'))renderBadgeScreen();
-}
-
-function createConfetti(){
-var colors=['#ff9900','#3fb950','#58a6ff','#bc8cff','#ffcc00','#f85149'];var c=document.createElement('div');c.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';document.body.appendChild(c);
-for(var i=0;i<50;i++){var p=document.createElement('div');p.style.cssText='position:absolute;top:-20px;left:'+(Math.random()*100)+'%;width:'+(Math.random()*8+4)+'px;height:'+(Math.random()*8+4)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';animation:confettiFall '+(Math.random()*1.5+1.5)+'s ease-in '+(Math.random()*.5)+'s forwards';c.appendChild(p)}
-setTimeout(function(){c.remove()},3500);
-}
+function submitCode(){var boxes=document.querySelectorAll('.code-box'),code='';boxes.forEach(function(b){code+=b.value});code=code.toUpperCase();var feedback=document.getElementById('codeFeedback'),zone=ZONES.find(function(z){return z.code===code});if(!zone){feedback.innerHTML='<span style="color:var(--red)">❌ 유효하지 않은 코드입니다</span>';document.getElementById('codeBoxes').style.animation='badgeShake .4s ease';setTimeout(function(){document.getElementById('codeBoxes').style.animation=''},400);return}var data=getBadgeData();if(data.zones[zone.id]){feedback.innerHTML='<span style="color:var(--accent)">✅ 이미 획득한 뱃지입니다!</span>';return}data.zones[zone.id]=Date.now();saveBadgeData(data);boxes.forEach(function(b){b.value='';b.classList.add('success')});feedback.innerHTML='';setTimeout(function(){boxes.forEach(function(b){b.classList.remove('success')});showUnlockAnim(zone)},300)}
+function tryUnlockInteractive(){var data=getBadgeData();if(data.zones['zone_interactive'])return;data.zones['zone_interactive']=Date.now();saveBadgeData(data);var zone=ZONES.find(function(z){return z.id==='zone_interactive'});setTimeout(function(){showUnlockAnim(zone)},800)}
+function showUnlockAnim(zone){document.getElementById('unlockIcon').textContent=zone.badge.icon;document.getElementById('unlockName').textContent=zone.badge.name;document.getElementById('unlockDesc').textContent=zone.badge.desc;document.getElementById('unlockZone').textContent='📍 '+zone.name;document.getElementById('badgeUnlockOverlay').classList.add('on');createConfetti()}
+function closeUnlockAnim(){document.getElementById('badgeUnlockOverlay').classList.remove('on');updateBadgeUI();var data=getBadgeData();if(Object.keys(data.zones).length>=3){setTimeout(function(){createConfetti();setTimeout(createConfetti,400);setTimeout(createConfetti,800);showBadgeToast('🎉 올 클리어! 부스에서 기념품을 수령하세요!')},400)}if(document.getElementById('scrBadge').classList.contains('on'))renderBadgeScreen()}
+function createConfetti(){var colors=['#ff9900','#3fb950','#58a6ff','#bc8cff','#ffcc00','#f85149'];var c=document.createElement('div');c.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';document.body.appendChild(c);for(var i=0;i<50;i++){var p=document.createElement('div');p.style.cssText='position:absolute;top:-20px;left:'+(Math.random()*100)+'%;width:'+(Math.random()*8+4)+'px;height:'+(Math.random()*8+4)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';animation:confettiFall '+(Math.random()*1.5+1.5)+'s ease-in '+(Math.random()*.5)+'s forwards';c.appendChild(p)}setTimeout(function(){c.remove()},3500)}
 function showBadgeToast(msg){var t=document.createElement('div');t.className='badge-toast';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.style.animation='fadeOut .3s ease forwards';setTimeout(function(){t.remove()},300)},2500)}
-function captureResult(maxKey,sorted,total){
-var job=JOB_DATA[maxKey],scores=pState.scores;
-var W=720,H=920,dpr=2;
-var canvas=document.createElement('canvas');canvas.width=W*dpr;canvas.height=H*dpr;
-var ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
-var grad=ctx.createLinearGradient(0,0,0,H);
-grad.addColorStop(0,'#0d1117');grad.addColorStop(1,'#161b22');
-ctx.fillStyle=grad;roundRect(ctx,0,0,W,H,0,true);
-var acGrad=ctx.createLinearGradient(0,0,W,0);
-acGrad.addColorStop(0,'#ff9900');acGrad.addColorStop(1,'#ff6b00');
-ctx.fillStyle=acGrad;ctx.fillRect(0,0,W,4);
-ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='center';
-ctx.fillText('☁️ AWS Summit Seoul 2026 · Datacenter Challenge',W/2,36);
-ctx.font='64px serif';ctx.textAlign='center';ctx.fillText(job.icon,W/2,110);
-ctx.fillStyle='#bc8cff';ctx.font='700 14px Inter,sans-serif';
-ctx.fillText('당신에게 어울리는 InfraOps 직무는...',W/2,145);
-ctx.fillStyle='#c9d1d9';ctx.font='900 28px Inter,sans-serif';
-ctx.fillText(job.name+' — '+job.full,W/2,185);
-ctx.fillStyle='#ff9900';ctx.font='italic 700 15px Inter,sans-serif';
-ctx.fillText('"'+job.catch+'"',W/2,215);
-ctx.strokeStyle='#30363d';ctx.lineWidth=1;
-ctx.beginPath();ctx.moveTo(40,235);ctx.lineTo(W-40,235);ctx.stroke();
-ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='left';
-var subLines=wrapText(ctx,job.sub,60,W-120);
-var sy=260;
-subLines.forEach(function(line){ctx.fillText(line,60,sy);sy+=20});
-ctx.fillStyle='#8b949e';ctx.font='400 12px Inter,sans-serif';
-var descLines=wrapText(ctx,job.desc.replace(/\n/g,' '),60,W-120);
-sy+=5;
-descLines.slice(0,4).forEach(function(line){ctx.fillText(line,60,sy);sy+=18});
-if(descLines.length>4){ctx.fillText('...',60,sy);sy+=18}
-sy+=10;
-ctx.strokeStyle='#30363d';ctx.lineWidth=1;
-ctx.beginPath();ctx.moveTo(40,sy);ctx.lineTo(W-40,sy);ctx.stroke();
-sy+=25;
-ctx.fillStyle='#c9d1d9';ctx.font='700 14px Inter,sans-serif';ctx.textAlign='left';
-ctx.fillText('📊 성향 분석',60,sy);sy+=20;
-var barColors={DCO:'#58a6ff',DCEO:'#d29922',SEC:'#f85149',GND:'#3fb950',LOG:'#bc8cff',PRJ:'#ff9900'};
-sorted.forEach(function(k){
-var pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;
-var barW=W-180,fillW=Math.max(barW*(pct/100),2);
-ctx.fillStyle=isBest?'#c9d1d9':'#8b949e';ctx.font=(isBest?'700':'600')+' 12px Inter,sans-serif';ctx.textAlign='left';
-ctx.fillText(j.icon+' '+j.name,60,sy+4);
-ctx.textAlign='right';ctx.fillText(pct+'%'+(isBest?' ★':''),W-60,sy+4);
-sy+=12;
-ctx.fillStyle='#30363d';roundRect(ctx,60,sy,barW,8,4,true);
-if(isBest){var bGrad=ctx.createLinearGradient(60,0,60+fillW,0);bGrad.addColorStop(0,'#bc8cff');bGrad.addColorStop(1,'#58a6ff');ctx.fillStyle=bGrad}
-else{ctx.fillStyle=barColors[k]||'#58a6ff'}
-roundRect(ctx,60,sy,fillW,8,4,true);
-sy+=22;
-});
-sy+=10;
-ctx.strokeStyle='#30363d';ctx.lineWidth=1;
-ctx.beginPath();ctx.moveTo(40,sy);ctx.lineTo(W-40,sy);ctx.stroke();
-sy+=25;
-ctx.fillStyle='#c9d1d9';ctx.font='700 14px Inter,sans-serif';ctx.textAlign='left';
-ctx.fillText('💼 주요 역할',60,sy);sy+=22;
-job.roles.forEach(function(role,ri){
-var col=ri%2===0?60:W/2+10;
-if(ri===2)sy+=45;
-ctx.fillStyle='#c9d1d9';ctx.font='700 12px Inter,sans-serif';
-ctx.fillText(role.icon+' '+role.title,col,sy);
-ctx.fillStyle='#8b949e';ctx.font='400 11px Inter,sans-serif';
-ctx.fillText(role.desc,col,sy+16);
-});
-sy+=65;
-ctx.fillStyle='#30363d';ctx.fillRect(0,H-50,W,50);
-ctx.fillStyle='#8b949e';ctx.font='600 11px Inter,sans-serif';ctx.textAlign='center';
-ctx.fillText('AWS Data Center Team · Summit Seoul 2026',W/2,H-22);
-canvas.toBlob(function(blob){
-var url=URL.createObjectURL(blob);
-var a=document.createElement('a');a.href=url;a.download='my-infraops-result.png';
-document.body.appendChild(a);a.click();document.body.removeChild(a);
-URL.revokeObjectURL(url);
-showBadgeToast('📸 결과 이미지가 저장되었습니다!');
-},'image/png');
-}
-
-function roundRect(ctx,x,y,w,h,r,fill){
-ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
-ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
-ctx.closePath();if(fill)ctx.fill();else ctx.stroke();
-}
-
-function wrapText(ctx,text,x,maxW){
-var words=text.split(''),lines=[],line='';
-for(var i=0;i<words.length;i++){
-var test=line+words[i];
-if(ctx.measureText(test).width>maxW&&line.length>0){lines.push(line);line=words[i]}
-else{line=test}
-}
-if(line)lines.push(line);return lines;
-}
+function captureResult(maxKey,sorted,total){var job=JOB_DATA[maxKey],scores=pState.scores;var W=720,H=920,dpr=2;var canvas=document.createElement('canvas');canvas.width=W*dpr;canvas.height=H*dpr;var ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);var grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#0d1117');grad.addColorStop(1,'#161b22');ctx.fillStyle=grad;roundRect(ctx,0,0,W,H,0,true);var acGrad=ctx.createLinearGradient(0,0,W,0);acGrad.addColorStop(0,'#ff9900');acGrad.addColorStop(1,'#ff6b00');ctx.fillStyle=acGrad;ctx.fillRect(0,0,W,4);ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='center';ctx.fillText('☁️ AWS Summit Seoul 2026 · Datacenter Challenge',W/2,36);ctx.font='64px serif';ctx.textAlign='center';ctx.fillText(job.icon,W/2,110);ctx.fillStyle='#bc8cff';ctx.font='700 14px Inter,sans-serif';ctx.fillText('당신에게 어울리는 InfraOps 직무는...',W/2,145);ctx.fillStyle='#c9d1d9';ctx.font='900 28px Inter,sans-serif';ctx.fillText(job.name+' — '+job.full,W/2,185);ctx.fillStyle='#ff9900';ctx.font='italic 700 15px Inter,sans-serif';ctx.fillText('"'+job.catch+'"',W/2,215);ctx.strokeStyle='#30363d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,235);ctx.lineTo(W-40,235);ctx.stroke();ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='left';var subLines=wrapText(ctx,job.sub,60,W-120);var sy=260;subLines.forEach(function(line){ctx.fillText(line,60,sy);sy+=20});ctx.fillStyle='#8b949e';ctx.font='400 12px Inter,sans-serif';var descLines=wrapText(ctx,job.desc.replace(/\n/g,' '),60,W-120);sy+=5;descLines.slice(0,4).forEach(function(line){ctx.fillText(line,60,sy);sy+=18});if(descLines.length>4){ctx.fillText('...',60,sy);sy+=18}sy+=10;ctx.strokeStyle='#30363d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,sy);ctx.lineTo(W-40,sy);ctx.stroke();sy+=25;ctx.fillStyle='#c9d1d9';ctx.font='700 14px Inter,sans-serif';ctx.textAlign='left';ctx.fillText('📊 성향 분석',60,sy);sy+=20;var barColors={DCO:'#58a6ff',DCEO:'#d29922',SEC:'#f85149',GND:'#3fb950',LOG:'#bc8cff',PRJ:'#ff9900'};sorted.forEach(function(k){var pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;var barW=W-180,fillW=Math.max(barW*(pct/100),2);ctx.fillStyle=isBest?'#c9d1d9':'#8b949e';ctx.font=(isBest?'700':'600')+' 12px Inter,sans-serif';ctx.textAlign='left';ctx.fillText(j.icon+' '+j.name,60,sy+4);ctx.textAlign='right';ctx.fillText(pct+'%'+(isBest?' ★':''),W-60,sy+4);sy+=12;ctx.fillStyle='#30363d';roundRect(ctx,60,sy,barW,8,4,true);if(isBest){var bGrad=ctx.createLinearGradient(60,0,60+fillW,0);bGrad.addColorStop(0,'#bc8cff');bGrad.addColorStop(1,'#58a6ff');ctx.fillStyle=bGrad}else{ctx.fillStyle=barColors[k]||'#58a6ff'}roundRect(ctx,60,sy,fillW,8,4,true);sy+=22});sy+=10;ctx.strokeStyle='#30363d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,sy);ctx.lineTo(W-40,sy);ctx.stroke();sy+=25;ctx.fillStyle='#c9d1d9';ctx.font='700 14px Inter,sans-serif';ctx.textAlign='left';ctx.fillText('💼 주요 역할',60,sy);sy+=22;job.roles.forEach(function(role,ri){var col=ri%2===0?60:W/2+10;if(ri===2)sy+=45;ctx.fillStyle='#c9d1d9';ctx.font='700 12px Inter,sans-serif';ctx.fillText(role.icon+' '+role.title,col,sy);ctx.fillStyle='#8b949e';ctx.font='400 11px Inter,sans-serif';ctx.fillText(role.desc,col,sy+16)});sy+=65;ctx.fillStyle='#30363d';ctx.fillRect(0,H-50,W,50);ctx.fillStyle='#8b949e';ctx.font='600 11px Inter,sans-serif';ctx.textAlign='center';ctx.fillText('AWS Data Center Team · Summit Seoul 2026',W/2,H-22);canvas.toBlob(function(blob){var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='my-infraops-result.png';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);showBadgeToast('📸 결과 이미지가 저장되었습니다!')},'image/png')}
+function roundRect(ctx,x,y,w,h,r,fill){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();if(fill)ctx.fill();else ctx.stroke()}
+function wrapText(ctx,text,x,maxW){var words=text.split(''),lines=[],line='';for(var i=0;i<words.length;i++){var test=line+words[i];if(ctx.measureText(test).width>maxW&&line.length>0){lines.push(line);line=words[i]}else{line=test}}if(line)lines.push(line);return lines}
 </script>
 </body>
 </html>
