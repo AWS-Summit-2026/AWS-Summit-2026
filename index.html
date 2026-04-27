@@ -633,7 +633,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
   window.addEventListener('resize',resize);
 
   /* ── 스트림 라인 (디바이스별 속도 조절) ── */
-  var isMobile=W<600;
   var streams=[];
   var COLORS=['rgba(0,150,255,','rgba(0,220,255,','rgba(80,180,255,','rgba(0,100,220,','rgba(140,200,255,'];
   function makeStream(initDist){
@@ -885,7 +884,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
   setTimeout(function(){document.getElementById('introGranted').classList.add('show');},grantedAt);
   setTimeout(function(){document.getElementById('introBtns').classList.add('show');},grantedAt+500);
 })();
-function enterApp(){document.getElementById('introOverlay').classList.add('hide')}
+function enterApp(){document.getElementById('introOverlay').classList.add('hide');window.scrollTo({top:0,behavior:'instant'})}
 
 var EXPLORE=[
 {id:'E1',sev:'p1',title:'고장난 디스크 처리',location:'ICN-01 Hall A',rack:'A-12-07',story:'당신은 서버 점검 중 HDD 4번에서 FAULT 경고를 발견했습니다. 이 서버는 고객 데이터를 저장하는 스토리지 서버입니다.',knowledge:{title:'💡 고객 데이터 보호',desc:'AWS에서는 고객 데이터 보호가 최우선입니다. 고장난 디스크에도 고객 데이터가 남아있을 수 있으므로, 수리/재사용은 절대 허용되지 않습니다.'},hint:'고장난 디스크에도 <strong>고객 데이터</strong>가 남아있을 수 있습니다.',leds:[{label:'HDD 4',status:'red',val:'FAULT'},{label:'RAID',status:'amber',val:'DEGRADED'},{label:'Other HDDs',status:'green',val:'OK'}],context:{'Disk Status':{val:'HDD4 FAULT',cls:'bad'},'Data Class':{val:'Customer Data',cls:'bad'},'Spare Disk':{val:'Available',cls:''}},options:[{title:'수리 후 다른 서버에 재사용',time:'-',desc:'비용 절감을 위해 디스크를 수리하여 재사용합니다.',pros:['비용 절감'],cons:['고객 데이터 유출 위험','보안 규정 위반'],score:10,best:false,explain:'❌ 절대 안 됩니다! 고장난 디스크에도 고객 데이터가 남아있을 수 있습니다.'},{title:'고객 데이터 보호를 위해 즉시 파기 처리',time:'규정 절차',desc:'고장난 디스크를 즉시 보안 절차에 따라 파기합니다.',pros:['고객 데이터 완전 보호','보안 규정 준수'],cons:[],score:100,best:true,explain:'✅ AWS에서는 고장난 디스크를 절대 수리/재사용하지 않습니다.'},{title:'창고에 보관했다가 나중에 일괄 처리',time:'-',desc:'모아두었다가 한꺼번에 처리합니다.',pros:['효율적 처리'],cons:['보관 중 분실/유출 위험'],score:30,best:false,explain:'⚠️ 고객 데이터가 담긴 디스크를 보관하는 것 자체가 리스크입니다.'}]},
