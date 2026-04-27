@@ -238,46 +238,191 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 @keyframes fadeOut{to{opacity:0;transform:translateY(10px)}}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-/* ===== INTRO OVERLAY (주황색 톤) ===== */
-#introOverlay{position:fixed;inset:0;z-index:99999;background:#0a0600;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .8s ease,visibility .8s ease}
+/* ===== INTRO OVERLAY v2 — Datacenter Boot + Cloud Connect ===== */
+#introOverlay{position:fixed;inset:0;z-index:99999;background:#060a0f;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;transition:opacity .7s ease,visibility .7s ease;font-family:'JetBrains Mono',monospace;overflow:hidden}
 #introOverlay.hide{opacity:0;visibility:hidden;pointer-events:none}
-.intro-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.intro-particle{position:absolute;width:3px;height:3px;background:var(--orange);border-radius:50%;opacity:.3;animation:particleFloat linear infinite}
-@keyframes particleFloat{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.3}90%{opacity:.3}100%{transform:translateY(-10vh) scale(1);opacity:0}}
-.intro-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,153,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,153,0,.03) 1px,transparent 1px);background-size:60px 60px;animation:gridScroll 20s linear infinite}
-@keyframes gridScroll{0%{background-position:0 0}100%{background-position:60px 60px}}
-.intro-scanline{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:.3;animation:scanline 4s linear infinite}
-@keyframes scanline{0%{top:0}100%{top:100%}}
-.intro-logo{width:auto;min-width:90px;height:70px;padding:0 18px;background:transparent;border:2px solid var(--orange);border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--orange);font-size:13px;font-family:'Orbitron',sans-serif;margin-bottom:28px;position:relative;animation:introPulse 2s ease-in-out infinite;letter-spacing:3px}
-.intro-logo::before{content:'';position:absolute;inset:-6px;border:1px solid rgba(255,153,0,.2);border-radius:20px;animation:introRing 3s ease-in-out infinite}
-@keyframes introPulse{0%,100%{box-shadow:0 0 20px rgba(255,153,0,.3),inset 0 0 20px rgba(255,153,0,.05)}50%{box-shadow:0 0 40px rgba(255,153,0,.5),inset 0 0 30px rgba(255,153,0,.1)}}
-@keyframes introRing{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
-.intro-typing{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--orange);min-height:28px;text-align:center;text-shadow:0 0 20px rgba(255,153,0,.5)}
-.intro-cursor{display:inline-block;width:2px;height:22px;background:var(--orange);margin-left:2px;animation:cursorBlink .5s infinite;box-shadow:0 0 8px var(--orange)}
-@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
-.intro-sub{font-size:13px;color:#b58a6b;margin-top:12px;opacity:0;transition:opacity .6s ease;letter-spacing:1px}
-.intro-sub.show{opacity:1}
-.intro-enter-btn{margin-top:32px;padding:14px 40px;background:transparent;border:2px solid var(--orange);border-radius:8px;color:var(--orange);font-size:14px;font-weight:700;font-family:'Orbitron',sans-serif;cursor:pointer;letter-spacing:3px;text-transform:uppercase;transition:all .3s ease;opacity:0;transform:translateY(20px);position:relative;overflow:hidden}
-.intro-enter-btn.show{opacity:1;transform:translateY(0)}
-.intro-enter-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,153,0,.1),transparent);opacity:0;transition:opacity .3s}
-.intro-enter-btn:hover::before{opacity:1}
-.intro-enter-btn:hover{background:rgba(255,153,0,.1);box-shadow:0 0 30px rgba(255,153,0,.3),0 0 60px rgba(255,153,0,.1);transform:translateY(-2px)}
-.intro-enter-btn:active{transform:scale(.97)}
+.intro-grid-bg{position:absolute;inset:0;background-image:
+  repeating-linear-gradient(90deg,rgba(0,255,100,.015) 0px,rgba(0,255,100,.015) 1px,transparent 1px,transparent 60px),
+  repeating-linear-gradient(0deg,rgba(0,255,100,.015) 0px,rgba(0,255,100,.015) 1px,transparent 1px,transparent 40px)}
+.intro-scanline{position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(180deg,transparent,rgba(0,255,100,.03),transparent);animation:scanDown 3s linear infinite;pointer-events:none}
+@keyframes scanDown{0%{top:-100px}100%{top:100%}}
+
+/* 이벤트 태그 */
+.intro-event-tag{font-size:13px;color:rgba(255,153,0,.8);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;text-align:center;opacity:0;animation:iFadeUp .5s ease forwards;animation-delay:.1s;font-weight:700}
+@keyframes iFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* 메인 패널 */
+.intro-panel{position:relative;width:100%;max-width:440px;background:rgba(8,14,10,.97);border:1px solid #1a3a24;border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,255,100,.05),0 0 60px rgba(0,0,0,.9)}
+.intro-panel-bar{background:#0a1a10;border-bottom:1px solid #1a3a24;padding:9px 14px;display:flex;align-items:center;justify-content:space-between}
+.intro-panel-bar-left{display:flex;align-items:center;gap:7px}
+.intro-panel-bar-dot{width:7px;height:7px;border-radius:50%;background:#3fb950;box-shadow:0 0 5px #3fb950;animation:blink 2s infinite}
+.intro-panel-bar-title{font-size:10px;color:#3fb950;letter-spacing:2px}
+.intro-panel-bar-right{font-size:9px;color:#1a4a24;letter-spacing:1px}
+.intro-panel-body{padding:18px}
+
+/* 시설 헤더 */
+.intro-facility{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #0f2a18}
+.intro-facility-name{font-size:17px;font-weight:900;color:#fff;letter-spacing:1px;margin-bottom:2px;font-family:'Orbitron',sans-serif}
+.intro-facility-name span{color:#ff9900}
+.intro-facility-sub{font-size:9px;color:#2a5a34;letter-spacing:2px}
+
+/* Phase 구분선 */
+.intro-phase-label{font-size:9px;color:#1a4a24;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+
+/* ── Phase 1: Boot items ── */
+.intro-boot-list{margin-bottom:14px}
+.intro-boot-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(26,58,36,.5);font-size:11px;opacity:0}
+.intro-boot-item:last-child{border-bottom:none}
+.intro-boot-item.show{opacity:1;animation:iFadeUp .2s ease forwards}
+.iboot-icon{font-size:12px;width:16px;text-align:center;flex-shrink:0}
+.iboot-label{color:#3a7a4a;flex:1}
+.iboot-spec{color:#1a4a24;font-size:10px;margin-right:8px}
+.iboot-status{font-size:9px;padding:2px 6px;border-radius:3px;flex-shrink:0}
+.iboot-status.booting{background:rgba(210,153,34,.1);color:#d29922;animation:blink 1s infinite}
+.iboot-status.ok{background:rgba(63,185,80,.1);color:#3fb950}
+
+/* ── Phase 2: Cloud connection log ── */
+.intro-conn-list{margin-bottom:14px;display:none}
+.intro-conn-list.show{display:block}
+.intro-conn-item{display:flex;align-items:baseline;gap:6px;font-size:10px;line-height:1.9;opacity:0}
+.intro-conn-item.show{opacity:1;animation:iFadeUp .2s ease forwards}
+.iconn-arrow{color:#3fb950;flex-shrink:0}
+.iconn-host{color:#58a6ff}
+.iconn-status{margin-left:auto;font-size:9px;padding:1px 5px;border-radius:3px;flex-shrink:0}
+.iconn-status.pend{background:rgba(210,153,34,.1);color:#d29922;animation:blink 1s infinite}
+.iconn-status.ok{background:rgba(63,185,80,.1);color:#3fb950}
+.iconn-ms{color:#1a4a24;font-size:9px;margin-left:3px}
+
+/* 프로그레스 */
+.intro-progress-wrap{margin-bottom:14px}
+.intro-progress-label{display:flex;justify-content:space-between;font-size:9px;color:#2a5a34;margin-bottom:4px;letter-spacing:.5px}
+.intro-progress-track{height:3px;background:#0a1a10;border-radius:2px;overflow:hidden}
+.intro-progress-fill{height:100%;background:linear-gradient(90deg,#1a6a30,#3fb950);border-radius:2px;width:0%;transition:width .5s ease;box-shadow:0 0 6px rgba(63,185,80,.3)}
+
+/* Access Granted */
+.intro-granted{display:none;margin-bottom:14px}
+.intro-granted.show{display:block;animation:iFadeUp .4s ease}
+.intro-granted-box{background:rgba(63,185,80,.06);border:1px solid rgba(63,185,80,.2);border-radius:5px;padding:10px 12px;margin-bottom:10px}
+.intro-granted-title{font-size:11px;color:#3fb950;letter-spacing:2px;margin-bottom:6px}
+.intro-granted-copy{font-size:11px;color:#c9d1d9;line-height:1.8;font-family:'Inter',sans-serif}
+.intro-granted-copy strong{color:#ff9900;font-family:'JetBrains Mono',monospace;font-size:10px}
+
+/* 버튼 */
+.intro-btns{display:none;flex-direction:column;gap:7px}
+.intro-btns.show{display:flex;animation:iFadeUp .4s ease}
+.intro-enter-btn{padding:13px;background:linear-gradient(135deg,#ff9900,#ff6b00);border:none;border-radius:6px;color:#fff;font-size:13px;font-weight:700;font-family:'Orbitron',sans-serif;cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:all .2s ease;box-shadow:0 0 20px rgba(255,153,0,.25);text-align:center}
+.intro-enter-btn:hover{box-shadow:0 0 32px rgba(255,153,0,.5);transform:translateY(-1px)}
+.intro-enter-btn:active{transform:scale(.98)}
+.intro-skip-btn{background:none;border:none;color:#1a3a24;font-size:9px;cursor:pointer;letter-spacing:2px;padding:3px;transition:color .2s;font-family:'JetBrains Mono',monospace;text-align:center;text-transform:uppercase}
+.intro-skip-btn:hover{color:#3a6a44}
 
 @media(max-width:480px){.two-col{grid-template-columns:1fr}.pr-roles{grid-template-columns:1fr}.hero-h{font-size:26px}.challenges{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.stats-bar{gap:12px}.stat-num{font-size:20px}.result-grid{grid-template-columns:repeat(3,1fr)}.pr-bar-expand-roles{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- ===== INTRO OVERLAY (주황색 톤) ===== -->
+<!-- ===== INTRO OVERLAY v2 — Datacenter Boot + Cloud Connect ===== -->
 <div id="introOverlay">
-<div class="intro-grid-bg"></div>
-<div class="intro-particles" id="introParticles"></div>
-<div class="intro-scanline"></div>
-<div class="intro-logo">InfraOPS</div>
-<div class="intro-typing"><span id="introText"></span><span class="intro-cursor"></span></div>
-<div class="intro-sub" id="introSub">Experience the Infrastructure Behind the Cloud</div>
-<button class="intro-enter-btn" id="introEnterBtn" onclick="enterApp()">▶ ENTER</button>
+  <div class="intro-grid-bg"></div>
+  <div class="intro-scanline"></div>
+
+  <div class="intro-event-tag">☁️ &nbsp;AWS Summit Seoul 2026 &nbsp;·&nbsp; InfraOPS</div>
+
+  <div class="intro-panel">
+    <div class="intro-panel-bar">
+      <div class="intro-panel-bar-left">
+        <div class="intro-panel-bar-dot"></div>
+        <div class="intro-panel-bar-title">SYSTEM BOOT — ICN-01</div>
+      </div>
+      <div class="intro-panel-bar-right">ap-northeast-2 · Seoul</div>
+    </div>
+    <div class="intro-panel-body">
+
+      <div class="intro-facility">
+        <div class="intro-facility-name">AWS <span>Datacenter</span></div>
+        <div class="intro-facility-sub">Seoul Region · Hall A · Initializing Systems</div>
+      </div>
+
+      <!-- Phase 1: System Boot -->
+      <div class="intro-phase-label" id="iPhase1Label">// phase 1 — system boot</div>
+      <div class="intro-boot-list">
+        <div class="intro-boot-item" id="iB0">
+          <span class="iboot-icon">⚡</span>
+          <span class="iboot-label">Power Systems</span>
+          <span class="iboot-spec">UPS / Generator</span>
+          <span class="iboot-status booting" id="iBS0">booting</span>
+        </div>
+        <div class="intro-boot-item" id="iB1">
+          <span class="iboot-icon">❄️</span>
+          <span class="iboot-label">Cooling Systems</span>
+          <span class="iboot-spec">CRAC / Chiller</span>
+          <span class="iboot-status booting" id="iBS1">booting</span>
+        </div>
+        <div class="intro-boot-item" id="iB2">
+          <span class="iboot-icon">🖥️</span>
+          <span class="iboot-label">Server Infrastructure</span>
+          <span class="iboot-spec">48,000 nodes</span>
+          <span class="iboot-status booting" id="iBS2">booting</span>
+        </div>
+        <div class="intro-boot-item" id="iB3">
+          <span class="iboot-icon">🌐</span>
+          <span class="iboot-label">Network Fabric</span>
+          <span class="iboot-spec">800G Spine</span>
+          <span class="iboot-status booting" id="iBS3">booting</span>
+        </div>
+      </div>
+
+      <!-- Phase 2: Cloud Connection -->
+      <div class="intro-phase-label" id="iPhase2Label" style="display:none">// phase 2 — cloud connection</div>
+      <div class="intro-conn-list" id="iConnList">
+        <div class="intro-conn-item" id="iConn0">
+          <span class="iconn-arrow">▸</span>
+          <span class="iconn-host">ec2.ap-northeast-2.amazonaws.com</span>
+          <span class="iconn-status pend" id="iConnS0">connecting</span>
+        </div>
+        <div class="intro-conn-item" id="iConn1">
+          <span class="iconn-arrow">▸</span>
+          <span class="iconn-host">datacenter-ops.icn01.internal</span>
+          <span class="iconn-status pend" id="iConnS1">connecting</span>
+        </div>
+        <div class="intro-conn-item" id="iConn2">
+          <span class="iconn-arrow">▸</span>
+          <span class="iconn-host">infra-ops.summit.aws</span>
+          <span class="iconn-status pend" id="iConnS2">connecting</span>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="intro-progress-wrap">
+        <div class="intro-progress-label">
+          <span id="introProgressLabel">Initializing...</span>
+          <span id="introProgressPct">0%</span>
+        </div>
+        <div class="intro-progress-track">
+          <div class="intro-progress-fill" id="introProgressFill"></div>
+        </div>
+      </div>
+
+      <!-- Access Granted + 카피 -->
+      <div class="intro-granted" id="introGranted">
+        <div class="intro-granted-box">
+          <div class="intro-granted-title">✅ &nbsp;ACCESS GRANTED — ICN-01 Seoul</div>
+          <div class="intro-granted-copy">
+            Every stream, every search, every transaction —<br>
+            it all runs on <strong>physical infrastructure</strong> like this.<br>
+            You're about to step behind the cloud.
+          </div>
+        </div>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="intro-btns" id="introBtns">
+        <button class="intro-enter-btn" onclick="enterApp()">▶ Enter the Datacenter</button>
+        <button class="intro-skip-btn" onclick="enterApp()">Skip</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <div class="app">
@@ -369,29 +514,57 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 </div>
 
 <script>
-/* ===== INTRO (주황색 톤, 수동 ENTER) ===== */
+/* ===== INTRO v2 — Boot + Cloud Connect Sequence ===== */
 (function(){
-var overlay=document.getElementById('introOverlay');
-var textEl=document.getElementById('introText');
-var subEl=document.getElementById('introSub');
-var enterBtn=document.getElementById('introEnterBtn');
-var particlesEl=document.getElementById('introParticles');
-var msg='AWS Datacenter Challenge';
-var idx=0;
-for(var p=0;p<25;p++){
-var dot=document.createElement('div');
-dot.className='intro-particle';
-dot.style.left=Math.random()*100+'%';
-dot.style.animationDuration=(Math.random()*4+3)+'s';
-dot.style.animationDelay=(Math.random()*3)+'s';
-dot.style.width=dot.style.height=(Math.random()*3+2)+'px';
-particlesEl.appendChild(dot);
-}
-function typeChar(){
-if(idx<msg.length){textEl.textContent+=msg.charAt(idx);idx++;setTimeout(typeChar,60)}
-else{setTimeout(function(){subEl.classList.add('show')},400);setTimeout(function(){enterBtn.classList.add('show')},1000)}
-}
-setTimeout(typeChar,400);
+  var fill=document.getElementById('introProgressFill');
+  var pLabel=document.getElementById('introProgressLabel');
+  var pPct=document.getElementById('introProgressPct');
+  function setProgress(pct,label){fill.style.width=pct+'%';pLabel.textContent=label;pPct.textContent=pct+'%';}
+
+  /* Phase 1: System Boot */
+  var boots=[
+    {id:'iB0',statusId:'iBS0',delay:300, resolve:650, label:'ONLINE',   progressAfter:{pct:22,msg:'Power systems online...'}},
+    {id:'iB1',statusId:'iBS1',delay:950, resolve:600, label:'NOMINAL',  progressAfter:{pct:44,msg:'Cooling systems nominal...'}},
+    {id:'iB2',statusId:'iBS2',delay:1550,resolve:700, label:'RUNNING',  progressAfter:{pct:62,msg:'Server infrastructure running...'}},
+    {id:'iB3',statusId:'iBS3',delay:2250,resolve:550, label:'CONNECTED',progressAfter:{pct:75,msg:'Network fabric connected...'}}
+  ];
+  boots.forEach(function(b){
+    setTimeout(function(){document.getElementById(b.id).classList.add('show');},b.delay);
+    setTimeout(function(){
+      var s=document.getElementById(b.statusId);
+      s.className='iboot-status ok';s.textContent='✓ '+b.label;
+      setProgress(b.progressAfter.pct,b.progressAfter.msg);
+    },b.delay+b.resolve);
+  });
+
+  /* Phase 2: Cloud Connection — starts after boot */
+  var connDelay=3100;
+  setTimeout(function(){
+    document.getElementById('iPhase2Label').style.display='block';
+    document.getElementById('iConnList').classList.add('show');
+    setProgress(78,'Connecting to cloud endpoints...');
+  },connDelay);
+
+  var conns=[
+    {id:'iConn0',statusId:'iConnS0',delay:connDelay+200, resolve:500, ms:'12ms'},
+    {id:'iConn1',statusId:'iConnS1',delay:connDelay+700, resolve:400, ms:'4ms'},
+    {id:'iConn2',statusId:'iConnS2',delay:connDelay+1100,resolve:450, ms:'8ms'}
+  ];
+  conns.forEach(function(c,i){
+    setTimeout(function(){document.getElementById(c.id).classList.add('show');},c.delay);
+    setTimeout(function(){
+      var s=document.getElementById(c.statusId);
+      s.className='iconn-status ok';s.textContent='✓ connected';
+      var ms=document.createElement('span');ms.className='iconn-ms';ms.textContent=c.ms;
+      document.getElementById(c.id).appendChild(ms);
+      if(i===2)setProgress(100,'All systems ready.');
+    },c.delay+c.resolve);
+  });
+
+  /* Phase 3: Access Granted + 버튼 */
+  var grantedAt=connDelay+1100+450+400;
+  setTimeout(function(){document.getElementById('introGranted').classList.add('show');},grantedAt);
+  setTimeout(function(){document.getElementById('introBtns').classList.add('show');},grantedAt+500);
 })();
 function enterApp(){document.getElementById('introOverlay').classList.add('hide')}
 
