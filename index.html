@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AWS Data Center Challenge</title>
+<title>AWS Datacenter Challenge</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;--border:#30363d;--accent:#58a6ff;--text1:#c9d1d9;--text2:#8b949e;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#ff9900;--purple:#bc8cff}
 body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
@@ -173,8 +173,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .result-item{background:var(--bg2);border-radius:8px;padding:12px}.result-item-label{font-size:9px;color:var(--text2);margin-bottom:3px}.result-item-val{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace}
 .result-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-
-/* ===== BADGE SYSTEM ===== */
 .hdr-badge-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text1)}
 .hdr-badge-btn:active{transform:scale(.95)}
 .hdr-badge-btn .badge-cnt{color:var(--orange);font-family:'JetBrains Mono',monospace}
@@ -240,36 +238,50 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 @keyframes fadeOut{to{opacity:0;transform:translateY(10px)}}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-/* ===== INTRO OVERLAY ===== */
-#introOverlay{position:fixed;inset:0;z-index:99999;background:var(--bg0);display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .8s ease,visibility .8s ease}
+/* ===== INTRO OVERLAY (주황색 톤) ===== */
+#introOverlay{position:fixed;inset:0;z-index:99999;background:#0a0600;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .8s ease,visibility .8s ease}
 #introOverlay.hide{opacity:0;visibility:hidden;pointer-events:none}
-.intro-logo{width:60px;height:60px;background:linear-gradient(135deg,#ff9900,#ff6b00);border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:20px;margin-bottom:24px;animation:introPulse 1.5s ease-in-out infinite}
-@keyframes introPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,153,0,.4)}50%{transform:scale(1.05);box-shadow:0 0 30px 10px rgba(255,153,0,.2)}}
-.intro-typing{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--text1);min-height:28px;text-align:center}
-.intro-cursor{display:inline-block;width:2px;height:20px;background:var(--orange);margin-left:2px;animation:cursorBlink .6s infinite}
-@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
-.intro-sub{font-size:12px;color:var(--text2);margin-top:12px;opacity:0;transition:opacity .5s ease}
-.intro-sub.show{opacity:1}
 .intro-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .intro-particle{position:absolute;width:3px;height:3px;background:var(--orange);border-radius:50%;opacity:.3;animation:particleFloat linear infinite}
 @keyframes particleFloat{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.3}90%{opacity:.3}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+.intro-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,153,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,153,0,.03) 1px,transparent 1px);background-size:60px 60px;animation:gridScroll 20s linear infinite}
+@keyframes gridScroll{0%{background-position:0 0}100%{background-position:60px 60px}}
+.intro-scanline{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:.3;animation:scanline 4s linear infinite}
+@keyframes scanline{0%{top:0}100%{top:100%}}
+.intro-logo{width:auto;min-width:90px;height:70px;padding:0 18px;background:transparent;border:2px solid var(--orange);border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--orange);font-size:13px;font-family:'Orbitron',sans-serif;margin-bottom:28px;position:relative;animation:introPulse 2s ease-in-out infinite;letter-spacing:3px}
+.intro-logo::before{content:'';position:absolute;inset:-6px;border:1px solid rgba(255,153,0,.2);border-radius:20px;animation:introRing 3s ease-in-out infinite}
+@keyframes introPulse{0%,100%{box-shadow:0 0 20px rgba(255,153,0,.3),inset 0 0 20px rgba(255,153,0,.05)}50%{box-shadow:0 0 40px rgba(255,153,0,.5),inset 0 0 30px rgba(255,153,0,.1)}}
+@keyframes introRing{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.intro-typing{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--orange);min-height:28px;text-align:center;text-shadow:0 0 20px rgba(255,153,0,.5)}
+.intro-cursor{display:inline-block;width:2px;height:22px;background:var(--orange);margin-left:2px;animation:cursorBlink .5s infinite;box-shadow:0 0 8px var(--orange)}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+.intro-sub{font-size:13px;color:#b58a6b;margin-top:12px;opacity:0;transition:opacity .6s ease;letter-spacing:1px}
+.intro-sub.show{opacity:1}
+.intro-enter-btn{margin-top:32px;padding:14px 40px;background:transparent;border:2px solid var(--orange);border-radius:8px;color:var(--orange);font-size:14px;font-weight:700;font-family:'Orbitron',sans-serif;cursor:pointer;letter-spacing:3px;text-transform:uppercase;transition:all .3s ease;opacity:0;transform:translateY(20px);position:relative;overflow:hidden}
+.intro-enter-btn.show{opacity:1;transform:translateY(0)}
+.intro-enter-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,153,0,.1),transparent);opacity:0;transition:opacity .3s}
+.intro-enter-btn:hover::before{opacity:1}
+.intro-enter-btn:hover{background:rgba(255,153,0,.1);box-shadow:0 0 30px rgba(255,153,0,.3),0 0 60px rgba(255,153,0,.1);transform:translateY(-2px)}
+.intro-enter-btn:active{transform:scale(.97)}
 
 @media(max-width:480px){.two-col{grid-template-columns:1fr}.pr-roles{grid-template-columns:1fr}.hero-h{font-size:26px}.challenges{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.stats-bar{gap:12px}.stat-num{font-size:20px}.result-grid{grid-template-columns:repeat(3,1fr)}.pr-bar-expand-roles{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- ===== INTRO OVERLAY ===== -->
+<!-- ===== INTRO OVERLAY (주황색 톤) ===== -->
 <div id="introOverlay">
+<div class="intro-grid-bg"></div>
 <div class="intro-particles" id="introParticles"></div>
-<div class="intro-logo">DC</div>
+<div class="intro-scanline"></div>
+<div class="intro-logo">InfraOPS</div>
 <div class="intro-typing"><span id="introText"></span><span class="intro-cursor"></span></div>
-<div class="intro-sub" id="introSub">Experience the Infrastructure Behind the Cloud</div>
+<button class="intro-enter-btn" id="introEnterBtn" onclick="enterApp()">▶ ENTER</button>
 </div>
 
 <div class="app">
 <div class="hdr">
-<div class="hdr-left"><div class="hdr-logo">DC</div><div><div class="hdr-title">AWS Data Center Challenge</div><div class="hdr-sub">Experience the Infrastructure Behind the Cloud</div></div></div>
+<div class="hdr-left"><div class="hdr-logo">DC</div><div><div class="hdr-title">AWS Datacenter Challenge</div><div class="hdr-sub">Experience the Infrastructure Behind the Cloud</div></div></div>
 <div class="hdr-right">
 <div class="hdr-badge"><div class="dot"></div><span class="mono">DC 24/7 ONLINE</span></div>
 <div class="hdr-badge-btn" onclick="showBadgeScreen()">🏅 <span class="badge-cnt" id="hdrBadgeCnt">0/3</span></div>
@@ -301,7 +313,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 </div>
 <div class="section-title">🎮 <span class="hl">체험</span>을 선택하세요</div>
 <div class="challenges" id="challengeCards">
-<div class="chal" id="chalExplore"><div class="chal-icon">🔧</div><div class="chal-title">데이터센터 운영 체험</div><div class="chal-desc">DC 엔지니어가 되어 장애를 진단하고 최적의 조치를 선택하세요.</div><div class="chal-tags"><span class="tag">🖥️ 서버</span><span class="tag">⚡ 전력</span><span class="tag">❄️ 냉각</span><span class="tag">🔒 보안</span><span class="tag">📝 7문제</span></div></div>
+<div class="chal" id="chalExplore"><div class="chal-icon">🔧</div><div class="chal-title">DC Operation 체험</div><div class="chal-desc">DC 엔지니어가 되어 장애를 진단하고 최적의 조치를 선택하세요.</div><div class="chal-tags"><span class="tag">🖥️ 서버</span><span class="tag">⚡ 전력</span><span class="tag">❄️ 냉각</span><span class="tag">🔒 보안</span><span class="tag">📝 7문제</span></div></div>
 <div class="chal" id="chalPersonality"><div class="chal-icon">🧑‍💼</div><div class="chal-title">나의 InfraOps 직무는?</div><div class="chal-desc">상황별 선택을 통해 당신에게 어울리는 데이터센터 직무를 찾아보세요.</div><div class="chal-tags"><span class="tag">🎯 성향 테스트</span><span class="tag">💼 6개 직무</span><span class="tag">📝 10문제</span></div></div>
 </div>
 <div class="section-title">🏅 <span class="hl">뱃지</span> 컬렉션</div>
@@ -356,16 +368,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 </div>
 
 <script>
-/* ===== INTRO ===== */
+/* ===== INTRO (주황색 톤, 수동 ENTER) ===== */
 (function(){
 var overlay=document.getElementById('introOverlay');
 var textEl=document.getElementById('introText');
-var subEl=document.getElementById('introSub');
+var enterBtn=document.getElementById('introEnterBtn');
 var particlesEl=document.getElementById('introParticles');
-var msg='AWS Data Center Challenge';
+var msg='AWS Datacenter Challenge';
 var idx=0;
-// particles
-for(var p=0;p<20;p++){
+for(var p=0;p<25;p++){
 var dot=document.createElement('div');
 dot.className='intro-particle';
 dot.style.left=Math.random()*100+'%';
@@ -376,10 +387,10 @@ particlesEl.appendChild(dot);
 }
 function typeChar(){
 if(idx<msg.length){textEl.textContent+=msg.charAt(idx);idx++;setTimeout(typeChar,60)}
-else{setTimeout(function(){subEl.classList.add('show')},300);setTimeout(function(){overlay.classList.add('hide')},2800)}
-}
-setTimeout(typeChar,400);
+else{setTimeout(function(){enterBtn.classList.add('show')},600)}
+}setTimeout(typeChar,400);
 })();
+function enterApp(){document.getElementById('introOverlay').classList.add('hide')}
 
 var EXPLORE=[
 {id:'E1',sev:'p1',title:'고장난 디스크 처리',location:'ICN-01 Hall A',rack:'A-12-07',story:'당신은 서버 점검 중 HDD 4번에서 FAULT 경고를 발견했습니다. 이 서버는 고객 데이터를 저장하는 스토리지 서버입니다.',knowledge:{title:'💡 고객 데이터 보호',desc:'AWS에서는 고객 데이터 보호가 최우선입니다. 고장난 디스크에도 고객 데이터가 남아있을 수 있으므로, 수리/재사용은 절대 허용되지 않습니다.'},hint:'고장난 디스크에도 <strong>고객 데이터</strong>가 남아있을 수 있습니다.',leds:[{label:'HDD 4',status:'red',val:'FAULT'},{label:'RAID',status:'amber',val:'DEGRADED'},{label:'Other HDDs',status:'green',val:'OK'}],context:{'Disk Status':{val:'HDD4 FAULT',cls:'bad'},'Data Class':{val:'Customer Data',cls:'bad'},'Spare Disk':{val:'Available',cls:''}},options:[{title:'수리 후 다른 서버에 재사용',time:'-',desc:'비용 절감을 위해 디스크를 수리하여 재사용합니다.',pros:['비용 절감'],cons:['고객 데이터 유출 위험','보안 규정 위반'],score:10,best:false,explain:'❌ 절대 안 됩니다! 고장난 디스크에도 고객 데이터가 남아있을 수 있습니다.'},{title:'고객 데이터 보호를 위해 즉시 파기 처리',time:'규정 절차',desc:'고장난 디스크를 즉시 보안 절차에 따라 파기합니다.',pros:['고객 데이터 완전 보호','보안 규정 준수'],cons:[],score:100,best:true,explain:'✅ AWS에서는 고장난 디스크를 절대 수리/재사용하지 않습니다.'},{title:'창고에 보관했다가 나중에 일괄 처리',time:'-',desc:'모아두었다가 한꺼번에 처리합니다.',pros:['효율적 처리'],cons:['보관 중 분실/유출 위험'],score:30,best:false,explain:'⚠️ 고객 데이터가 담긴 디스크를 보관하는 것 자체가 리스크입니다.'}]},
@@ -692,7 +703,7 @@ var acGrad=ctx.createLinearGradient(0,0,W,0);
 acGrad.addColorStop(0,'#ff9900');acGrad.addColorStop(1,'#ff6b00');
 ctx.fillStyle=acGrad;ctx.fillRect(0,0,W,4);
 ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='center';
-ctx.fillText('☁️ AWS Summit Seoul 2026 · Data Center Challenge',W/2,36);
+ctx.fillText('☁️ AWS Summit Seoul 2026 · Datacenter Challenge',W/2,36);
 ctx.font='64px serif';ctx.textAlign='center';ctx.fillText(job.icon,W/2,110);
 ctx.fillStyle='#bc8cff';ctx.font='700 14px Inter,sans-serif';
 ctx.fillText('당신에게 어울리는 InfraOps 직무는...',W/2,145);
