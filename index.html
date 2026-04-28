@@ -374,6 +374,24 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 .badge-hub-v3-count{font-size:18px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--orange);flex-shrink:0}
 
 @media(max-width:480px){.dc-facts{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.pr-roles{grid-template-columns:1fr}.hero-h{font-size:24px}.challenges{grid-template-columns:1fr}.stats-bar{gap:12px}.stat-num{font-size:20px}.result-grid{grid-template-columns:repeat(3,1fr)}.pr-bar-expand-roles{grid-template-columns:1fr}.hdr-nav-item:not(.active){display:none}.hdr-region{display:none}}
+
+/* ===== Hero animated grid bg ===== */
+.hero{position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:
+  linear-gradient(rgba(255,153,0,.08) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,153,0,.08) 1px,transparent 1px);
+background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(255,153,0,.04) 0%,transparent 50%),radial-gradient(ellipse at 50% 90%,transparent 30%,var(--bg0) 70%);pointer-events:none;animation:heroGlow 4s ease-in-out infinite}
+.hero>*{position:relative;z-index:1}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(48px,48px)}}
+@keyframes heroGlow{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* ===== Fact stagger reveal ===== */
+.fact{opacity:0;transform:translateY(40px) scale(.97);transition:opacity .6s ease,transform .6s ease}
+.fact.visible{opacity:1;transform:translateY(0) scale(1)}
+
+/* ===== Stat countup ===== */
+.stat-num{transition:transform .3s ease,text-shadow .3s ease}
 </style>
 </head>
 <body>
@@ -1177,6 +1195,54 @@ function showBadgeToast(msg){var t=document.createElement('div');t.className='ba
 function captureResult(maxKey,sorted,total){var job=JOB_DATA[maxKey],scores=pState.scores;var W=720,H=920,dpr=2;var canvas=document.createElement('canvas');canvas.width=W*dpr;canvas.height=H*dpr;var ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);var grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#0d1117');grad.addColorStop(1,'#161b22');ctx.fillStyle=grad;roundRect(ctx,0,0,W,H,0,true);var acGrad=ctx.createLinearGradient(0,0,W,0);acGrad.addColorStop(0,'#ff9900');acGrad.addColorStop(1,'#ff6b00');ctx.fillStyle=acGrad;ctx.fillRect(0,0,W,4);ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='center';ctx.fillText('☁️ AWS Summit Seoul 2026 · Datacenter Challenge',W/2,36);ctx.font='64px serif';ctx.textAlign='center';ctx.fillText(job.icon,W/2,110);ctx.fillStyle='#bc8cff';ctx.font='700 14px Inter,sans-serif';ctx.fillText(T('prType'),W/2,145);ctx.fillStyle='#c9d1d9';ctx.font='900 28px Inter,sans-serif';ctx.fillText(job.name+' — '+job.full,W/2,185);ctx.fillStyle='#ff9900';ctx.font='italic 700 15px Inter,sans-serif';ctx.fillText('"'+job.catch+'"',W/2,215);ctx.strokeStyle='#30363d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,235);ctx.lineTo(W-40,235);ctx.stroke();ctx.fillStyle='#8b949e';ctx.font='600 13px Inter,sans-serif';ctx.textAlign='left';var subLines=wrapText(ctx,job.sub,60,W-120);var sy=260;subLines.forEach(function(line){ctx.fillText(line,60,sy);sy+=20});ctx.fillStyle='#8b949e';ctx.font='400 12px Inter,sans-serif';var descLines=wrapText(ctx,job.desc.replace(/\n/g,' '),60,W-120);sy+=5;descLines.slice(0,4).forEach(function(line){ctx.fillText(line,60,sy);sy+=18});if(descLines.length>4){ctx.fillText('...',60,sy);sy+=18}sy+=10;ctx.strokeStyle='#30363d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,sy);ctx.lineTo(W-40,sy);ctx.stroke();sy+=25;ctx.fillStyle='#c9d1d9';ctx.font='700 14px Inter,sans-serif';ctx.textAlign='left';ctx.fillText(T('prAnalysis'),60,sy);sy+=20;var barColors={DCO:'#58a6ff',DCEO:'#d29922',SEC:'#f85149',GND:'#3fb950',LOG:'#bc8cff',PRJ:'#ff9900'};sorted.forEach(function(k){var pct=Math.round(scores[k]/total*100),j=JOB_DATA[k],isBest=k===maxKey;var barW=W-180,fillW=Math.max(barW*(pct/100),2);ctx.fillStyle=isBest?'#c9d1d9':'#8b949e';ctx.font=(isBest?'700':'600')+' 12px Inter,sans-serif';ctx.textAlign='left';ctx.fillText(j.icon+' '+j.name,60,sy+4);ctx.textAlign='right';ctx.fillText(pct+'%'+(isBest?' ★':''),W-60,sy+4);sy+=12;ctx.fillStyle='#30363d';roundRect(ctx,60,sy,barW,8,4,true);if(isBest){var bGrad=ctx.createLinearGradient(60,0,60+fillW,0);bGrad.addColorStop(0,'#bc8cff');bGrad.addColorStop(1,'#58a6ff');ctx.fillStyle=bGrad}else{ctx.fillStyle=barColors[k]||'#58a6ff'}roundRect(ctx,60,sy,fillW,8,4,true);sy+=22});sy+=10;ctx.strokeStyle='#30363d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,sy);ctx.lineTo(W-40,sy);ctx.stroke();sy+=25;ctx.fillStyle='#c9d1d9';ctx.font='700 14px Inter,sans-serif';ctx.textAlign='left';ctx.fillText(T('prRolesLabel'),60,sy);sy+=22;job.roles.forEach(function(role,ri){var col=ri%2===0?60:W/2+10;if(ri===2)sy+=45;ctx.fillStyle='#c9d1d9';ctx.font='700 12px Inter,sans-serif';ctx.fillText(role.icon+' '+role.title,col,sy);ctx.fillStyle='#8b949e';ctx.font='400 11px Inter,sans-serif';ctx.fillText(role.desc,col,sy+16)});sy+=65;ctx.fillStyle='#30363d';ctx.fillRect(0,H-50,W,50);ctx.fillStyle='#8b949e';ctx.font='600 11px Inter,sans-serif';ctx.textAlign='center';ctx.fillText('AWS InfraOPS Team · Summit Seoul 2026',W/2,H-22);canvas.toBlob(function(blob){var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='my-infraops-result.png';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);showBadgeToast(T('toastSaved'))},'image/png')}
 function roundRect(ctx,x,y,w,h,r,fill){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();if(fill)ctx.fill();else ctx.stroke()}
 function wrapText(ctx,text,x,maxW){var words=text.split(''),lines=[],line='';for(var i=0;i<words.length;i++){var test=line+words[i];if(ctx.measureText(test).width>maxW&&line.length>0){lines.push(line);line=words[i]}else{line=test}}if(line)lines.push(line);return lines}
+
+
+/* ===== Stats countup + Facts stagger reveal ===== */
+(function(){
+  function animateCount(el,target,suffix){
+    var isPercent=suffix==='%';
+    var dur=1200,start=0,startTime=null;
+    function step(ts){
+      if(!startTime)startTime=ts;
+      var p=Math.min((ts-startTime)/dur,1);
+      p=1-Math.pow(1-p,3);
+      var v=Math.round(start+(target-start)*p);
+      el.textContent=v+(suffix||'');
+      if(p<1)requestAnimationFrame(step);
+      else{el.style.transform='scale(1.15)';el.style.textShadow='0 0 12px rgba(255,153,0,.5)';setTimeout(function(){el.style.transform='scale(1)';el.style.textShadow='none'},300)}
+    }
+    requestAnimationFrame(step);
+  }
+  var statsObserved=false;
+  var statsObs=new IntersectionObserver(function(entries){
+    if(statsObserved)return;
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        statsObserved=true;
+        document.querySelectorAll('.stat-item').forEach(function(item,i){
+          var numEl=item.querySelector('.stat-num');
+          var raw=numEl.textContent.trim();
+          var suffix=raw.replace(/[0-9]/g,'');
+          var num=parseInt(raw);
+          if(isNaN(num))return;
+          setTimeout(function(){animateCount(numEl,num,suffix)},i*120);
+        });
+      }
+    });
+  },{threshold:0.3});
+  var sb=document.querySelector('.stats-bar');
+  if(sb)statsObs.observe(sb);
+
+  var factObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');factObs.unobserve(e.target)}
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('.fact').forEach(function(f,i){
+    f.style.transitionDelay=(i*0.08)+'s';
+    factObs.observe(f);
+  });
+})();
 </script>
 </body>
 </html>
