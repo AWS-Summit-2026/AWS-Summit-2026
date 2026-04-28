@@ -1039,7 +1039,7 @@ function setLang(lang){
   qa('#chalPersonality .tag').forEach(function(el,i){if(L.chalTags2[i])el.textContent=L.chalTags2[i]});
   var bm={btnRetry:'btnRetry',btnResultHome:'btnHome',btnExit:'btnExit',btnPExit:'btnExit',fbNextBtn:'btnNext'};
   Object.keys(bm).forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML=L[bm[id]]});
-  if(lang==='en'){EXPLORE=EXPLORE_KO;PERSONALITY=PERSONALITY_KO;JOB_DATA=JOB_DATA_KO;ZONES=ZONES_KO;ZONES=ZONES_EN}
+  if(lang==='en'){EXPLORE=EXPLORE_EN;PERSONALITY=PERSONALITY_EN;JOB_DATA=JOB_DATA_EN;ZONES=ZONES_EN}
   else{EXPLORE=EXPLORE_KO;PERSONALITY=PERSONALITY_KO;JOB_DATA=JOB_DATA_KO;ZONES=ZONES_KO}
   updateBadgeUI();
 }
@@ -1166,7 +1166,7 @@ document.getElementById('btnPExit').onclick=function(){showScreen('scrLanding')}
 document.getElementById('btnRetry').onclick=function(){startGame()};
 document.getElementById('btnResultHome').onclick=function(){showScreen('scrLanding')};
 document.getElementById('fbNextBtn').onclick=function(){closeFeedbackAndNext()};
-EXPLORE=EXPLORE_EN;PERSONALITY=PERSONALITY_EN;JOB_DATA=JOB_DATA_EN;ZONES=ZONES_EN;
+EXPLORE=EXPLORE_KO;PERSONALITY=PERSONALITY_KO;JOB_DATA=JOB_DATA_KO;ZONES=ZONES_KO;
 updateBadgeUI();
 });
 
