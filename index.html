@@ -256,7 +256,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
 /* ===== INTRO OVERLAY v3 — Datacenter Tunnel ===== */
-#introOverlay{position:fixed;inset:0;z-index:99999;background:#020608;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;transition:opacity .7s ease,visibility .7s ease;font-family:'JetBrains Mono',monospace;overflow:hidden}
+#introOverlay{position:fixed;inset:0;z-index:99999;background:#020608;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;transition:opacity .7s ease,visibility .7s ease;font-family:'JetBrains Mono',monospace;overflow-x:hidden;overflow-y:auto}
 #introOverlay.hide{opacity:0;visibility:hidden;pointer-events:none}
 #introCanvas{position:absolute;inset:0;width:100%;height:100%}
 .intro-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(0,120,255,.12),transparent 70%);pointer-events:none;animation:glowPulse 2s ease-in-out infinite}
@@ -266,7 +266,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min
 
 /* 이벤트 태그 */
 .intro-event-tag{position:relative;font-size:13px;color:rgba(255,153,0,.85);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;text-align:center;opacity:0;animation:iFadeUp .5s ease forwards;animation-delay:.1s;font-weight:700;text-shadow:0 0 20px rgba(255,153,0,.4)}
-.intro-panel{position:relative;width:100%;max-width:440px;background:rgba(4,12,6,.93);border:1px solid rgba(0,200,80,.2);border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,255,80,.04),0 0 60px rgba(0,0,0,.9),0 0 40px rgba(0,80,20,.08);backdrop-filter:blur(4px)}
+.intro-panel{position:relative;width:100%;max-width:440px;background:rgba(4,12,6,.93);border:1px solid rgba(0,200,80,.2);border-radius:8px;overflow:visible;box-shadow:0 0 0 1px rgba(0,255,80,.04),0 0 60px rgba(0,0,0,.9),0 0 40px rgba(0,80,20,.08);backdrop-filter:blur(4px)}
 .intro-panel-bar{background:rgba(0,20,8,.85);border-bottom:1px solid rgba(0,180,60,.2);padding:9px 14px;display:flex;align-items:center;justify-content:space-between}
 .intro-panel-bar-left{display:flex;align-items:center;gap:7px}
 .intro-panel-bar-dot{width:7px;height:7px;border-radius:50%;background:#3fb950;box-shadow:0 0 5px #3fb950;animation:blink 2s infinite}
@@ -392,6 +392,17 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
 
 /* ===== Stat countup ===== */
 .stat-num{transition:transform .3s ease,text-shadow .3s ease}
+
+@media(max-height:700px){
+  #introOverlay{justify-content:flex-start;padding-top:10px}
+  .intro-panel-body{padding:12px}
+  .intro-boot-item{padding:4px 0;font-size:10px}
+  .intro-facility{margin-bottom:10px;padding-bottom:8px}
+  .intro-facility-name{font-size:14px}
+  .intro-event-tag{font-size:11px;margin-bottom:8px}
+  .intro-granted-copy{font-size:10px}
+  .intro-enter-btn{padding:10px;font-size:12px}
+}
 </style>
 </head>
 <body>
