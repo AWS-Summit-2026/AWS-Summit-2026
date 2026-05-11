@@ -451,12 +451,6 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
 .guide-close:hover{border-color:var(--orange)}
 @media(max-width:480px){.step-desc{display:none}.step-name{font-size:10px}.step-item{padding:10px 6px 8px}}
 
-/* ===== Font Size Control ===== */
-.font-ctrl{display:flex;align-items:center;gap:2px;margin-right:4px}
-.font-ctrl-btn{width:28px;height:28px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;font-size:13px;font-weight:900;cursor:pointer;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'JetBrains Mono',monospace;line-height:1}
-.font-ctrl-btn:hover{border-color:var(--accent);color:var(--accent)}
-.font-ctrl-btn:active{transform:scale(.9)}
-
 /* ===== Step Guide Animations ===== */
 .step-item.current .step-num{animation:stepPulse 2s ease-in-out infinite}
 @keyframes stepPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,153,0,.6),0 0 8px rgba(255,153,0,.3)}50%{box-shadow:0 0 0 10px rgba(255,153,0,0),0 0 0 rgba(255,153,0,0)}}
@@ -596,7 +590,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
   </div>
   <div class="hdr-right">
     <div class="hdr-region"><span class="hdr-region-dot"></span>Seoul · 24/7 ONLINE</div>
-    <div class="font-ctrl"><button class="font-ctrl-btn" onclick="changeFontSize(-1)">A-</button><button class="font-ctrl-btn" onclick="changeFontSize(1)">A+</button></div><div class="hdr-help-btn" onclick="toggleGuide()">?</div><div class="hdr-badge-btn" onclick="showBadgeScreen()">🏅 <span class="badge-cnt" id="hdrBadgeCnt">0/1</span></div>
+    <div class="hdr-help-btn" onclick="toggleGuide()">?</div><div class="hdr-badge-btn" onclick="showBadgeScreen()">🏅 <span class="badge-cnt" id="hdrBadgeCnt">0/1</span></div>
   </div>
 </div>
 
@@ -626,7 +620,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
   <div class="hero">
     <div class="hero-eyebrow">☁️ AWS Summit Seoul 2026 · InfraOPS</div>
     <h2 class="hero-h">클라우드 뒤에 숨겨진<br><span class="hl">데이터센터</span>의 세계</h2>
-    <p class="hero-p">여러분이 사용하는 모든 클라우드 서비스는 거대한 데이터센터에서 운영됩니다.<br>수만 대의 서버, 끊이지 않는 전력, 정밀한 냉각 시스템 — 그 현장을 직접 체험해보세요.</p>
+    <p class="hero-p">여러분이 사용하는 모든 클라우드 서비스는 거대한 데이터센터에서 운영됩니다. 수만 대의 서버, 끊이지 않는 전력, 정밀한 냉각 시스템 — 그 현장을 직접 체험해보세요.</p>
   </div>
   <div class="stats-bar">
     <div class="stat-item"><div class="stat-num">38</div><div class="stat-label">글로벌 리전</div></div>
@@ -780,7 +774,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
         </div>
       </div>
     </div>
-    <div class="guide-tip" id="guideTip">💡 <strong>뱃지 3개</strong>를 모두 모으면 부스에서 <strong>특별 기념품</strong>을 드립니다!</div>
+    <div class="guide-tip" id="guideTip">💡 체험을 완료하면 부스에서 <strong>특별 기념품</strong>을 드립니다!</div>
     <button class="guide-close" id="guideCloseBtn" onclick="toggleGuide()">확인</button>
   </div>
 </div>
@@ -1060,7 +1054,7 @@ var UI={
     enter:'▶ 데이터센터 입장',skip:'건너뛰기',
     heroEyebrow:'☁️ AWS Summit Seoul 2026 · InfraOPS',
     heroH:'클라우드 뒤에 숨겨진<br><span class="hl">데이터센터</span>의 세계',
-    heroP:'여러분이 사용하는 모든 클라우드 서비스는 거대한 데이터센터에서 운영됩니다.<br>수만 대의 서버, 끊이지 않는 전력, 정밀한 냉각 시스템 — 그 현장을 직접 체험해보세요.',
+    heroP:'여러분이 사용하는 모든 클라우드 서비스는 거대한 데이터센터에서 운영됩니다. 수만 대의 서버, 끊이지 않는 전력, 정밀한 냉각 시스템 — 그 현장을 직접 체험해보세요.',
     secTitle:'🎮 <span class="hl">체험</span>을 선택하세요',
     badgeTitle:'🎮 체험 뱃지',badgeSub:'게임/퀴즈를 완료하면 기념품을 받을 수 있어요!',
     chalExploreTitle:'DC Operation 체험',chalExploreDesc:'DC 엔지니어가 되어 실제 장애 상황을 진단하고 최적의 조치를 선택하세요.',
@@ -1096,7 +1090,7 @@ var UI={
     hubAllClear:'🎉 체험 완료! 스태프에게 보여주세요!',
     hubCollect:'게임 완료 시 🎁 기념품 증정!',
     guideTitle:'부스 체험 가이드',guideSub:'3개 존을 순서대로 체험하고 기념품을 받아가세요!',
-    guideClose:'확인',guideTip:'💡 <strong>뱃지 3개</strong>를 모두 모으면 부스에서 <strong>특별 기념품</strong>을 드립니다!',
+    guideClose:'확인',guideTip:'💡 체험을 완료하면 부스에서 <strong>특별 기념품</strong>을 드립니다!',
     g1Name:'DC 체험존',g1Desc:'실제 데이터센터에서 사용하는 서버, 네트워크 장비, 스토리지를 직접 보고 만져보세요. 체험 후 <strong>인증코드</strong>를 받습니다.',g1Tag:'📝 인증코드 획득',
     g2Name:'사회공헌활동 존',g2Desc:'AWS 서울 리전의 에너지 절약과 사회공헌활동을 알아보세요. 체험 후 <strong>인증코드</strong>를 받습니다.',g2Tag:'📝 인증코드 획득',
     g3Name:'인터랙티브 존',g3Desc:'퀴즈, 직무 테스트 등에 참여하고 <strong>기념품</strong>을 받아가세요! 참여하면 <strong>자동으로 뱃지</strong>가 발급됩니다.',g3Tag:'🎮 참여 시 자동 발급',
@@ -1142,7 +1136,7 @@ var UI={
     hubAllClear:'🎉 Complete! Show this to staff!',
     hubCollect:'Complete a game for a 🎁 gift!',
     guideTitle:'Booth Experience Guide',guideSub:'Visit all 3 zones in order and get your gift!',
-    guideClose:'OK',guideTip:'💡 Collect all <strong>3 badges</strong> to receive a <strong>special gift</strong> at the booth!',
+    guideClose:'OK',guideTip:'💡 Complete the experience to receive a <strong>special gift</strong> at the booth!',
     g1Name:'DC Experience Zone',g1Desc:'See and touch real datacenter servers, network equipment, and storage. Get your <strong>verification code</strong> after the experience.',g1Tag:'📝 Get Code',
     g2Name:'Community Zone',g2Desc:'Learn about AWS Seoul Region\'s sustainability and community activities. Get your <strong>verification code</strong> after the experience.',g2Tag:'📝 Get Code',
     g3Name:'Interactive Zone',g3Desc:'Enjoy quizzes, role tests, and more — pick up your <strong>gift</strong>! Badge is <strong>automatically issued</strong> upon participation.',g3Tag:'🎮 Auto Badge',
@@ -1402,14 +1396,6 @@ function toggleGuide(){var o=document.getElementById('guideOverlay');o.classList
 
 /* ===== Step Guide Update ===== */
 function updateStepGuide(){}
-
-
-/* ===== Font Size Control ===== */
-var fontLevel=0;
-function changeFontSize(dir){
-  fontLevel=Math.max(-2,Math.min(3,fontLevel+dir));
-  document.querySelector('.app').style.fontSize=(14+fontLevel*2)+'px';
-}
 </script>
 </body>
 </html>
