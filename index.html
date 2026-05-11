@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AWS Datacenter Challenge</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;700;900&family=Orbitron:wght@400;700;900&family=Noto+Color+Emoji&display=swap');
+.flag-emoji{font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;font-size:28px;line-height:1}
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;--border:#30363d;--accent:#58a6ff;--text1:#c9d1d9;--text2:#8b949e;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#ff9900;--purple:#bc8cff}
 body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--text1);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
@@ -566,8 +567,8 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
       <div class="intro-btns" id="introBtns">
         <!-- 언어 선택 -->
         <div class="intro-lang">
-          <button class="intro-lang-btn active" id="langKo" onclick="setLang('ko')">🇰🇷 한국어</button>
-          <button class="intro-lang-btn" id="langEn" onclick="setLang('en')">🇺🇸 English</button>
+          <button class="intro-lang-btn active" id="langKo" onclick="setLang('ko')">한국어</button>
+          <button class="intro-lang-btn" id="langEn" onclick="setLang('en')">English</button>
         </div>
         <button class="intro-enter-btn" id="introEnterBtn" onclick="enterApp()">▶ 데이터센터 입장</button>
         <button class="intro-skip-btn" id="introSkipBtn" onclick="enterApp()">건너뛰기</button>
@@ -633,7 +634,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
   <!-- DC 팩트 8개 -->
   <div class="facts">
     <div class="fact"><div class="fact-icon">🌍</div><div class="fact-title">선도적인 클라우드</div><div class="fact-desc">전 세계 수백만 고객과 수만 파트너의 최대 커뮤니티. 17년 이상의 운영 전문성으로 가장 높은 가용성을 제공합니다.</div></div>
-    <div class="fact"><div class="fact-icon">🇰🇷</div><div class="fact-title">서울 리전 10년+</div><div class="fact-desc">어느덧 10년 넘게 운영 중인 베테랑 리전. AI DC 운영을 포함, 지속적으로 빠르게 성장중인 아시아 태평양 핵심 거점 중에 하나입니다.</div></div>
+    <div class="fact"><div class="fact-icon"><span class="flag-emoji">🇰🇷</span></div><div class="fact-title">서울 리전 10년+</div><div class="fact-desc">어느덧 10년 넘게 운영 중인 베테랑 리전. AI DC 운영을 포함, 지속적으로 빠르게 성장중인 아시아 태평양 핵심 거점 중에 하나입니다.</div></div>
     <div class="fact"><div class="fact-icon">🔒</div><div class="fact-title">가장 뛰어난 보안</div><div class="fact-desc">300개 이상의 보안 서비스, 143개 보안 표준 인증. 군대와 글로벌 은행 수준의 보안 요구를 충족합니다.</div></div>
     <div class="fact"><div class="fact-icon">🚀</div><div class="fact-title">가장 빠른 혁신</div><div class="fact-desc">AWS Lambda로 서버리스 컴퓨팅을 개척하고, Amazon SageMaker로 기계 학습을 대중화. 지속적으로 혁신을 가속화합니다.</div></div>
     <div class="fact"><div class="fact-icon">🏆</div><div class="fact-title">최고의 운영 전문성</div><div class="fact-desc">17년 이상 전 세계 수백만 고객에게 클라우드 서비스를 제공. 모든 클라우드 제공업체 중 가장 큰 규모의 환경을 갖추고 있습니다.</div></div>
@@ -644,6 +645,10 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
 
   <!-- 체험 선택 -->
   <div class="section-title">🎮 <span class="hl">체험</span>을 선택하세요</div>
+  <div style="text-align:center;margin:-8px 4px 16px;padding:12px 16px;background:linear-gradient(135deg,rgba(255,153,0,.1),rgba(255,107,0,.05));border:1px solid rgba(255,153,0,.3);border-radius:10px;font-size:13px;line-height:1.8;color:#c9d1d9">
+    🎟️ <strong style="color:#ff9900">둘 중 하나만 완료해도</strong> 체험 뱃지(추첨권)를 받을 수 있어요!<br>
+    <span style="font-size:11px;color:#8b949e">완료 후 스태프에게 화면을 보여주세요</span>
+  </div>
   <div class="challenges" id="challengeCards">
     <div class="chal" id="chalExplore">
       <div class="chal-icon">🔧</div>
@@ -655,7 +660,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
         <span class="chal-meta-item">📝 5문제</span>
         <span class="chal-meta-item">🏅 뱃지 획득</span>
       </div>
-      <div class="chal-tags"><span class="tag">🖥️ 서버</span><span class="tag">⚡ 전력</span><span class="tag">❄️ 냉각</span><span class="tag">🌐 네트워크</span><span class="tag">🏅 뱃지 획득</span></div>
+      <div class="chal-tags"><span class="tag">🖥️ 서버</span><span class="tag">⚡ 전력</span><span class="tag">❄️ 냉각</span><span class="tag">🌐 네트워크</span><span class="tag">🏅 뱃지 · 추첨권 획득</span></div>
     </div>
     <div class="chal" id="chalPersonality">
       <div class="chal-icon">🧩</div>
@@ -667,7 +672,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
         <span class="chal-meta-item">📝 10문제</span>
         <span class="chal-meta-item">💼 6개 직무</span>
       </div>
-      <div class="chal-tags"><span class="tag">🎯 성향 테스트</span><span class="tag">🏅 뱃지 획득</span></div>
+      <div class="chal-tags"><span class="tag">🎯 성향 테스트</span><span class="tag">🏅 뱃지 · 추첨권 획득</span></div>
     </div>
   </div>
 
@@ -1075,9 +1080,9 @@ var UI={
     prType:'당신에게 어울리는 InfraOps 직무는...',prAnalysis:'📊 당신의 성향 분석',
     prTapHint:'👆 각 직무를 눌러 자세히 알아보세요',prRolesLabel:'💼 주요 역할',
     prCapture:'📸 결과 캡처',prRetry:'🔄 다시 테스트',prHome:'← 메인으로',
-    badgeScreenTitle:'체험 뱃지',badgeScreenSub:'게임 또는 퀴즈를 완료하고 기념품을 받아가세요!',
-    badgeCollected:'수집 완료',badgeAllClear:'🎉 체험 완료!',
-    badgeAllDesc:'이 화면을 스태프에게 보여주시면<br><strong>기념품</strong>을 드립니다! 🎁',
+    badgeScreenTitle:'체험 뱃지 · 추첨권',badgeScreenSub:'퀴즈 또는 직무테스트 중 하나만 완료하면 뱃지(추첨권)를 받을 수 있어요!',
+    badgeCollected:'수집 완료',badgeAllClear:'🎉 체험 완료! 추첨권 획득!',
+    badgeAllDesc:'이 화면을 스태프에게 보여주시면<br><strong>뱃지 + 경품 추첨권</strong>을 드립니다!  ️',
     badgeCodeTitle:'🔑 Zone 인증번호 입력',badgeCodeDesc:'Infra 체험 존, CSR 존에서 받은<br>인증번호를 입력하세요',
     badgeCodeSubmit:'확인',badgeBackHome:'← 메인으로',
     badgeInvalid:'❌ 유효하지 않은 코드입니다',badgeAlready:'✅ 이미 획득한 뱃지입니다!',
@@ -1086,9 +1091,9 @@ var UI={
     endGreat:'훌륭해요!',endGreatSub:'데이터센터에 대해 많이 배우셨습니다.',
     endDone:'도전 완료!',endDoneSub:'데이터센터의 세계, 흥미롭지 않나요?',
     toastSaved:'📸 결과 이미지가 저장되었습니다!',
-    toastAllClear:'🎉 올 클리어! 부스에서 기념품을 수령하세요!',
-    hubAllClear:'🎉 체험 완료! 스태프에게 보여주세요!',
-    hubCollect:'게임 완료 시 🎁 기념품 증정!',
+    toastAllClear:'🎉 체험 완료! 추첨권을 받으세요!',
+    hubAllClear:'🎉 뱃지 획득! 추첨권 수령 가능!',
+    hubCollect:'완료 시  ️ 뱃지 + 추첨권 증정!',
     guideTitle:'부스 체험 가이드',guideSub:'3개 존을 순서대로 체험하고 기념품을 받아가세요!',
     guideClose:'확인',guideTip:'💡 체험을 완료하면 부스에서 <strong>특별 기념품</strong>을 드립니다!',
     g1Name:'DC 체험존',g1Desc:'실제 데이터센터에서 사용하는 서버, 네트워크 장비, 스토리지를 직접 보고 만져보세요. 체험 후 <strong>인증코드</strong>를 받습니다.',g1Tag:'📝 인증코드 획득',
@@ -1280,7 +1285,7 @@ PRJ:{icon:'📋',name:'Project',full:'DC Project Management',catch:'You\'re a co
 };
 
 var ZONES_KO=[
-{id:'zone_interactive',code:null,icon:'🎮',name:'인터랙티브 존',subtitle:'퀴즈 or 직무테스트 완료',badge:{icon:'🎮',name:'DC Challenger',desc:'체험 완료! 스태프에게 보여주세요 🎁'},type:'auto'}
+{id:'zone_interactive',code:null,icon:'🎮',name:'인터랙티브 존',subtitle:'퀴즈 or 직무테스트 완료',badge:{icon:'🎮',name:'DC Challenger',desc:'뱃지 획득! 스태프에게 보여주고 추첨권을 받으세요  ️'},type:'auto'}
 ];
 var ZONES_EN=[
 {id:'zone_interactive',code:null,icon:'🎮',name:'Interactive Zone',subtitle:'Quiz or Role Test Complete',badge:{icon:'🎮',name:'DC Challenger',desc:'Challenge Complete! Show this to staff 🎁'},type:'auto'}
