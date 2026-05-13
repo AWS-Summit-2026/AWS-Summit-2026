@@ -702,8 +702,7 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
   <!-- 체험 선택 -->
   <div class="section-title">🎮 <span class="hl">체험</span>을 선택하세요</div>
   <div style="text-align:center;margin:-8px 4px 16px;padding:12px 16px;background:linear-gradient(135deg,rgba(255,153,0,.1),rgba(255,107,0,.05));border:1px solid rgba(255,153,0,.3);border-radius:10px;font-size:13px;line-height:1.8;color:#c9d1d9">
-    🎟️ <strong style="color:#ff9900">둘 중 하나만 완료해도</strong> 체험 뱃지(추첨권)를 받을 수 있어요!<br>
-    <span style="font-size:11px;color:#8b949e">완료 후 스태프에게 화면을 보여주세요</span>
+    <span id="badgeInfoText">🎟️ <strong style="color:#ff9900">둘 중 하나만 완료해도</strong> 체험 뱃지(추첨권)를 받을 수 있어요!<br><span style="font-size:11px;color:#8b949e">완료 후 스태프에게 화면을 보여주세요</span></span>
   </div>
   <div class="challenges" id="challengeCards">
     <div class="chal" id="chalExplore">
@@ -749,9 +748,9 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 
   <!-- 채용 안내 -->
   <div style="margin:0 4px 20px;padding:16px;background:var(--bg1);border:1px solid var(--border);border-radius:12px;text-align:center">
-    <div style="font-size:13px;font-weight:700;margin-bottom:6px">💼 Data Center 운영 직무 채용 중!</div>
-    <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:10px">AWS 데이터센터 운영에 관심 있으시다면<br>부스 내 직원분에게 문의해주세요.</div>
-    <a href="https://www.amazon.jobs/content/en/teams/amazon-web-services/data-centers?team%5B%5D=aws&cmpid=SM_LIAW200332B&country%5B%5D=KR#search" target="_blank" style="display:inline-block;padding:8px 16px;background:rgba(255,153,0,.1);border:1px solid rgba(255,153,0,.3);border-radius:8px;color:var(--orange);font-size:11px;font-weight:700;text-decoration:none">채용 공고 보기 →</a>
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px" id="recruitTitle">💼 Data Center 운영 직무 채용 중!</div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:10px" id="recruitDesc">AWS 데이터센터 운영에 관심 있으시다면<br>부스 내 직원분에게 문의해주세요.</div>
+    <a href="https://www.amazon.jobs/content/en/teams/amazon-web-services/data-centers?team%5B%5D=aws&cmpid=SM_LIAW200332B&country%5B%5D=KR#search" target="_blank" style="display:inline-block;padding:8px 16px;background:rgba(255,153,0,.1);border:1px solid rgba(255,153,0,.3);border-radius:8px;color:var(--orange);font-size:11px;font-weight:700;text-decoration:none" id="recruitLink">채용 공고 보기 →</a>
   </div>
   <div class="landing-footer">☁️ AWS InfraOPS Team · Inside the Cloud : AWS Data Center</div>
 </div>
@@ -1251,6 +1250,11 @@ function setLang(lang){
   var sn=document.querySelectorAll('.step-name');var sd=document.querySelectorAll('.step-desc');
   if(sn[0])sn[0].textContent=L.step1;if(sn[1])sn[1].textContent=L.step2;if(sn[2])sn[2].textContent=L.step3;
   if(sd[0])sd[0].textContent=L.step1d;if(sd[1])sd[1].textContent=L.step2d;if(sd[2])sd[2].textContent=L.step3d;
+  /* recruit & badge info */
+  var bi=document.getElementById('badgeInfoText');if(bi)bi.innerHTML=L.badgeInfo;
+  var rt=document.getElementById('recruitTitle');if(rt)rt.innerHTML=L.recruitTitle;
+  var rd=document.getElementById('recruitDesc');if(rd)rd.innerHTML=L.recruitDesc;
+  var rl=document.getElementById('recruitLink');if(rl)rl.textContent=L.recruitLink;
   updateBadgeUI();
 }
 
@@ -1355,8 +1359,9 @@ DCEO:{icon:'⚡',name:'DCEO',full:'Data Center Engineering Operations',catch:'Yo
 SEC:{icon:'🔒',name:'Security',full:'Data Center Security',catch:'You\'re an ironclad guardian who upholds principles and blocks threats!',sub:'Physical security expert protecting customer data',color:'#f85149',desc:'AWS data centers operate under the strictest physical security standards in the world.\n\nA multi-layered security system is built and operated so that not a single unauthorized person can set foot inside. Security guards under the team protect the facility 24/7/365, monitoring access logs and CCTV via an integrated control system. Regular security audits and penetration tests proactively eliminate vulnerabilities.',roles:[{icon:'🚪',title:'Access Control',desc:'Multi-factor authentication via badge systems, mantraps, and security zones'},{icon:'📹',title:'Surveillance Systems',desc:'24/7 CCTV monitoring, anomalous behavior detection'},{icon:'🛡️',title:'Security Policy',desc:'Tailgating prevention, visitor management'},{icon:'📋',title:'Compliance',desc:'Security audit response, regulatory compliance management'}]},
 GND:{icon:'🌐',name:'GND',full:'Global Network Deployment',catch:'You\'re a connectivity expert who logically untangles complex structures!',sub:'Builder connecting datacenter global network infrastructure',color:'#3fb950',desc:'Data travels at the speed of light. GND builds the global network connecting datacenters worldwide.\n\nDesigning and deploying hundreds of thousands of ports and global network infrastructure. Leads network infrastructure design and build-out for new data center launches.',roles:[{icon:'🔌',title:'Network Build-out',desc:'Switch, router installation and global connectivity'},{icon:'📐',title:'Network Design',desc:'Topology design, capacity planning, redundancy'},{icon:'🌍',title:'Global Expansion',desc:'Network infrastructure for new regions/AZs'},{icon:'📊',title:'Network Monitoring',desc:'Traffic analysis, fault detection, performance optimization'}]},
 LOG:{icon:'📦',name:'Logistics',full:'Logistics',catch:'You\'re a logistics expert who moves the organization with efficiency and precision!',sub:'The hidden engine of data center operations — supply chain manager',color:'#bc8cff',desc:'Tens of thousands of servers, hundreds of thousands of parts — the right thing must be in the right place at the right time.\n\nThis is a key role that optimizes the global supply chain and efficiently manages assets worth hundreds of millions of dollars.',roles:[{icon:'📦',title:'Receiving & Inspection',desc:'Procurement, receiving, and quality inspection of all materials required for data center operations'},{icon:'📊',title:'Inventory Management',desc:'Spare parts inventory optimization, demand forecasting'},{icon:'🚚',title:'On-site Supply',desc:'Rapidly supplying needed parts to the floor during incidents'},{icon:'♻️',title:'Asset Management',desc:'Equipment lifecycle tracking, decommission logistics'}]},
-SAF:{icon:'🦺',name:'Safety',full:'Safety & Environment',catch:'당신은 모든 위험을 사전에 차단하는 안전의 수호자!',sub:'데이터센터의 안전과 환경을 책임지는 EHS 전문가',color:'#ff6b6b',desc:'무사고 운영을 목표로, 모든 작업 전 위험성 평가를 실시하며 수만 명의 엔지니어가 안전하게 일할 수 있는 환경을 만듭니다.\n\n전기 안전, 화재 예방, 유해물질 관리부터 비상 대응 훈련까지 — 사람과 시설 모두를 지킵니다.',roles:[{icon:'⚠️',title:'위험 평가',desc:'작업 전 위험성 분석, 안전 절차 수립'},{icon:'🔥',title:'화재/전기 안전',desc:'소화 시스템, 전기 안전, LOTO 관리'},{icon:'🏥',title:'비상 대응',desc:'대피 훈련, 응급처치, 사고 조사'},{icon:'🌿',title:'환경 관리',desc:'유해물질, 폐기물, 환경 규정 준수'}]},
-PRJ:{icon:'📋',name:'Project',full:'Project Management',catch:'You\'re a communication maestro who connects people and organizations!',sub:'Project leader who conducts the data center orchestra',color:'#ff9900',desc:'Leading InfraOPS team and global projects, coordinating cross-team collaboration — driving complex projects to success.\n\nPlanning and executing all support systems needed for data center operations — the control tower that creates an environment where engineers can focus solely on their work.',roles:[{icon:'📅',title:'Project Management',desc:'Schedule, resource, and risk management'},{icon:'🤝',title:'Cross-team Coordination',desc:'Collaboration across DCO, DCEO, GND, Security, and Logistics'},{icon:'🎯',title:'Event Planning',desc:'Data Center tours, training programs'},{icon:'🌱',title:'Community Contribution',desc:'Local community partnerships, social responsibility activities'}]}
+SAF:{icon:'🦺',name:'Safety',full:'Safety & Environment',catch:'You\'re a safety guardian who prevents all risks before they happen!',sub:'EHS expert responsible for data center safety and environment',color:'#ff6b6b',desc:'Targeting zero incidents, conducting risk assessments before every task, creating a safe working environment for thousands of engineers.\n\nProvides specialized training for high-risk tasks including electrical safety, fire prevention, and confined spaces. Conducts Root Cause Analysis (RCA) after incidents to prevent recurrence.',roles:[{icon:'⚠️',title:'Risk Assessment',desc:'Pre-work hazard analysis, safety procedures'},{icon:'🔥',title:'Fire & Electrical',desc:'Suppression systems, electrical safety, LOTO'},{icon:'🏥',title:'Emergency Response',desc:'Evacuation drills, first aid, incident investigation'},{icon:'🌿',title:'Environmental',desc:'Hazmat, waste management, compliance'}]},
+
+PRJ:{icon:'📋',name:'Project',full:'Project Management',catch:'You\'re a communication maestro who connects people and organizations!',sub:'The orchestra conductor of the data center',color:'#ff9900',desc:'Leading InfraOPS team and global projects, coordinating cross-team collaboration — driving complex projects to success.\n\nPlanning and executing all support systems needed for data center operations — the control tower that creates an environment where engineers can focus solely on their work.',roles:[{icon:'📅',title:'Project Management',desc:'Schedule, resource, and risk management'},{icon:'🤝',title:'Cross-team Coordination',desc:'Collaboration across DCO, DCEO, GND, Security, and Logistics'},{icon:'🎯',title:'Event Planning',desc:'External training programs and initiatives'},{icon:'🌱',title:'Community Contribution',desc:'Local community partnerships, social responsibility'}]}
 };
 
 var ZONES_KO=[
@@ -1385,7 +1390,12 @@ document.getElementById('btnRetry').onclick=function(){startGame()};
 document.getElementById('btnResultHome').onclick=function(){showScreen('scrLanding')};
 document.getElementById('fbNextBtn').onclick=function(){closeFeedbackAndNext()};
 EXPLORE=EXPLORE_KO;PERSONALITY=PERSONALITY_KO;JOB_DATA=JOB_DATA_KO;ZONES=ZONES_KO;
-updateBadgeUI();
+/* recruit & badge info */
+  var bi=document.getElementById('badgeInfoText');if(bi)bi.innerHTML=L.badgeInfo;
+  var rt=document.getElementById('recruitTitle');if(rt)rt.innerHTML=L.recruitTitle;
+  var rd=document.getElementById('recruitDesc');if(rd)rd.innerHTML=L.recruitDesc;
+  var rl=document.getElementById('recruitLink');if(rl)rl.textContent=L.recruitLink;
+  updateBadgeUI();
 });
 
 function startGame(){
