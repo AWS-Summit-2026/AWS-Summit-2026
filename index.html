@@ -395,9 +395,14 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
 
 @media(max-height:700px){
   #introOverlay{justify-content:flex-start;padding-top:10px}
-  .intro-panel-body{padding:12px}
+  .intro-panel-body{padding:10px}
+  .intro-boot-list{margin-bottom:8px}
+  .intro-conn-list{margin-bottom:8px}
+  .intro-progress-wrap{margin-bottom:8px}
+  .intro-granted-box{padding:8px 10px;margin-bottom:6px}
+  .intro-granted-copy{font-size:10px;line-height:1.6}
   .intro-boot-item{padding:4px 0;font-size:10px}
-  .intro-facility{margin-bottom:10px;padding-bottom:8px}
+  .intro-facility{margin-bottom:6px;padding-bottom:6px}
   .intro-facility-name{font-size:14px}
   .intro-event-tag{font-size:10px;margin-bottom:8px;letter-spacing:1px}
   .intro-granted-copy{font-size:10px}
@@ -549,12 +554,6 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
           <span class="iboot-spec">UPS / Generator</span>
           <span class="iboot-status booting" id="iBS0">booting</span>
         </div>
-        <div class="intro-boot-item" id="iB1">
-          <span class="iboot-icon">❄️</span>
-          <span class="iboot-label">Cooling Systems</span>
-          <span class="iboot-spec">CRAC / Chiller</span>
-          <span class="iboot-status booting" id="iBS1">booting</span>
-        </div>
         <div class="intro-boot-item" id="iB2">
           <span class="iboot-icon">🖥️</span>
           <span class="iboot-label">Server Infrastructure</span>
@@ -566,12 +565,6 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
           <span class="iboot-label">Network Fabric</span>
           <span class="iboot-spec">800G Spine</span>
           <span class="iboot-status booting" id="iBS3">booting</span>
-        </div>
-        <div class="intro-boot-item" id="iB4">
-          <span class="iboot-icon">🪪</span>
-          <span class="iboot-label">Security Badge System</span>
-          <span class="iboot-spec">Multi-layer Auth</span>
-          <span class="iboot-status booting" id="iBS4">booting</span>
         </div>
       </div>
 
@@ -1070,8 +1063,7 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
   /* Phase 1: System Boot — 빠르게 */
   var boots=[
     {id:'iB0',statusId:'iBS0',delay:100, resolve:200, label:'ONLINE',    pct:18, msg:'Power systems online...'},
-    {id:'iB1',statusId:'iBS1',delay:310, resolve:180, label:'NOMINAL',   pct:36, msg:'Cooling systems nominal...'},
-    {id:'iB2',statusId:'iBS2',delay:500, resolve:200, label:'RUNNING',   pct:54, msg:'Server infrastructure running...'},
+        {id:'iB2',statusId:'iBS2',delay:500, resolve:200, label:'RUNNING',   pct:54, msg:'Server infrastructure running...'},
     {id:'iB3',statusId:'iBS3',delay:710, resolve:180, label:'CONNECTED', pct:68, msg:'Network fabric connected...'},
     {id:'iB4',statusId:'iBS4',delay:900, resolve:200, label:'ACTIVE',    pct:78, msg:'Security badge system active...'}
   ];
@@ -1094,8 +1086,7 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:touch}
 
   var conns=[
     {id:'iConn0',statusId:'iConnS0',delay:p2start+100, resolve:250, ms:'12ms'},
-    {id:'iConn1',statusId:'iConnS1',delay:p2start+360, resolve:220, ms:'4ms'},
-    {id:'iConn2',statusId:'iConnS2',delay:p2start+590, resolve:220, ms:'8ms'}
+        {id:'iConn2',statusId:'iConnS2',delay:p2start+590, resolve:220, ms:'8ms'}
   ];
   conns.forEach(function(c,i){
     setTimeout(function(){document.getElementById(c.id).classList.add('show');},c.delay);
