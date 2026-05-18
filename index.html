@@ -12,7 +12,7 @@ html{background:var(--bg0);overscroll-behavior:none}
 :root{--bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;--border:#30363d;--accent:#58a6ff;--text1:#c9d1d9;--text2:#8b949e;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#ff9900;--purple:#bc8cff}
 body{font-family:'Inter',sans-serif;touch-action:manipulation;background:var(--bg0);color:var(--text1);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 .mono{font-family:'JetBrains Mono',monospace}
-.app{max-width:800px;margin:0 auto;padding:12px;background:var(--bg0);min-height:100vh}
+.app{max-width:800px;margin:0 auto;padding:12px;background:var(--bg0);min-height:100vh;position:relative;-webkit-transform:translateZ(0);transform:translateZ(0)}
 
 /* ===== AWS Console 스타일 헤더 ===== */
 .hdr{background:#161b22;border:none;border-bottom:1px solid #21262d;border-radius:0;padding:0 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:stretch;position:relative;height:44px}
@@ -511,7 +511,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
   .hdr{padding-top:env(safe-area-inset-top)}
 }
 /* Prevent iOS rubber-band scroll */
-html{overscroll-behavior:none;-webkit-overflow-scrolling:touch;background:var(--bg0);scroll-behavior:smooth}
+html{overscroll-behavior:none;-webkit-overflow-scrolling:touch;background:var(--bg0);}
 /* Touch targets minimum 44px */
 .opt,.chal,.pq-opt,.btn,.hdr-badge-btn,.hdr-help-btn,.hint-btn,.step-item{min-height:44px}
 /* Prevent text selection on interactive elements */
