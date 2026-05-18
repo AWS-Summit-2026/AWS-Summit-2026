@@ -12,7 +12,7 @@ html{background:var(--bg0);overscroll-behavior:none}
 :root{--bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;--border:#30363d;--accent:#58a6ff;--text1:#c9d1d9;--text2:#8b949e;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#ff9900;--purple:#bc8cff}
 body{font-family:'Inter',sans-serif;touch-action:manipulation;background:var(--bg0);color:var(--text1);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 .mono{font-family:'JetBrains Mono',monospace}
-.app{max-width:800px;margin:0 auto;padding:12px}
+.app{max-width:800px;margin:0 auto;padding:12px;background:var(--bg0);min-height:100vh}
 
 /* ===== AWS Console 스타일 헤더 ===== */
 .hdr{background:#161b22;border:none;border-bottom:1px solid #21262d;border-radius:0;padding:0 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:stretch;position:relative;height:44px}
@@ -37,7 +37,7 @@ body{font-family:'Inter',sans-serif;touch-action:manipulation;background:var(--b
 .hdr-badge-btn .badge-cnt{color:#ff9900}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-.scr{display:none;animation:fadeUp .4s ease}.scr.on{display:block}
+.scr{display:none;animation:fadeUp .4s ease;background:var(--bg0)}.scr.on{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .hero{text-align:center;padding:20px 16px 16px}
 .hero-eyebrow{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;position:relative;display:inline-block;padding:0 16px}.hero-eyebrow::before,.hero-eyebrow::after{content:"";position:absolute;top:50%;width:20px;height:1px;background:linear-gradient(90deg,transparent,var(--orange),transparent)}.hero-eyebrow::before{right:100%}.hero-eyebrow::after{left:100%}
@@ -389,7 +389,7 @@ background-size:48px 48px;animation:gridMove 25s linear infinite;pointer-events:
 @keyframes heroGlow{0%,100%{opacity:.6}50%{opacity:1}}
 
 /* ===== Fact stagger reveal ===== */
-.fact{opacity:0;transform:translateY(40px) scale(.97);transition:opacity .6s ease,transform .6s ease;background:linear-gradient(135deg,rgba(22,27,34,1),rgba(30,40,55,.9));border:1px solid rgba(255,153,0,.12);box-shadow:0 0 8px rgba(255,153,0,.05),inset 0 1px 0 rgba(255,255,255,.03);animation:factGlow 4s ease-in-out infinite alternate}.fact.visible{opacity:1;transform:translateY(0) scale(1)}@keyframes factGlow{0%{border-color:rgba(255,153,0,.06);box-shadow:0 0 4px rgba(255,153,0,.02)}100%{border-color:rgba(255,153,0,.12);box-shadow:0 0 8px rgba(255,153,0,.04)}}
+.fact{opacity:1;transition:all .3s ease;background:linear-gradient(135deg,rgba(22,27,34,1),rgba(30,40,55,.9));border:1px solid rgba(255,153,0,.12);box-shadow:0 0 8px rgba(255,153,0,.05),inset 0 1px 0 rgba(255,255,255,.03);animation:factGlow 4s ease-in-out infinite alternate}@keyframes factGlow{0%{border-color:rgba(255,153,0,.06);box-shadow:0 0 4px rgba(255,153,0,.02)}100%{border-color:rgba(255,153,0,.12);box-shadow:0 0 8px rgba(255,153,0,.04)}}
 
 /* ===== Stat countup ===== */
 .stat-num{transition:transform .3s ease,text-shadow .3s ease}
